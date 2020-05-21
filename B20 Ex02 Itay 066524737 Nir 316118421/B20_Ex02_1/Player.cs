@@ -5,16 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace B20_Ex02_1
-{
+{ // check how to write bool var name acording to guys
     public class Player 
     {
         private int m_Id;
         private string m_Name;
         private int m_NumOfHits;
         private bool m_IsHuman = !true;
-        public Player()
+        public Player(int i_Id, string i_Name, bool i_IsHuman)
         {
-            m_IsHuman = !true;
+            m_Id = i_Id;
+            m_Name = i_Name;
+            m_IsHuman = i_IsHuman;
         }
 
         public int NumOfHits { get => m_NumOfHits; set => m_NumOfHits = value; }

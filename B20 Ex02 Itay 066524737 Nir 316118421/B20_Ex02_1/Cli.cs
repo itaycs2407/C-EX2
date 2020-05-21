@@ -90,18 +90,17 @@ In order to play against the computer pls type 1."));
 
         private void playGame() {
             int playerTurnId = 0;
-           
             while (m_GameLogic.IsGameOn())
             {
                 playerTurnId = m_GameLogic.GetIdPlayerTurn();
 
-                if (m_GameLogic.GetPlayer(playerTurnId).GetIsHuman()) {
+                if (m_GameLogic.GetPlayer(playerTurnId).IsHuman) {
                     playHumanTurn(playerTurnId);
                 }
                 else {
                     playComputerTurn();
                 }
-                Console.Clear();
+                Console.Clear(); // need to use guys dll
                 printCurrentGrid();
                 m_GameLogic.FlipTurn(playerTurnId);
             }
@@ -111,7 +110,7 @@ In order to play against the computer pls type 1."));
         {
             List<int> playersCardsPicks = new List<int>(m_GameLogic.GetSameCardsCount());
 
-            playersCardsPicks[0] = (int)getPlayerPick(m_GameLogic.GetPlayer(i_playerId).GetName(),
+            playersCardsPicks[0] = (int)getPlayerPick(m_GameLogic.GetPlayer(i_playerId).Name,
                 "row", (char)1, (char)m_GameLogic.GetRowsLength());
             //playersCardsPicks[1] = getPlayerPick(m_GameManager.GetPlayer()i_playerId).GetName(),
             //    "column", 'A', (char)('A' + m_GameManager.GetColsLength());
@@ -121,31 +120,35 @@ In order to play against the computer pls type 1."));
             if (!isHit)
             {
                 printCurrentGrid(playersCardsPicks);
-                System.Threading.Thread.Sleep(2000);
-                Console.Clear();
+                System.Threading.Thread.Sleep(2000); // nedd to check if this the way guy asked
+                Console.Clear(); // need to use guys dll
             }
         }
 
         private void printCurrentGrid(List<int> playersCardsPicks = null)
         {
+
+            Cell[,] gameGrid = m_GameLogic.m_Grid;
+
+
             for (int i = 0; i < m_GameLogic.GetRowsLength(); i++)
             {
                 for (int j = 0; j < m_GameLogic.GetColsLength(); j++)
                 {
                     if(playersCardsPicks!= null && i == playersCardsPicks[0] && j == playersCardsPicks[j])
                     {
-                        Console.Write(@" {0} ", m_GameLogic.GetCardChar(i, j));
+                        Console.Write(@" {0} ", gameGrid[i ,j]);
                     }
                     else
                     {
-                        Console.Write(@" {0} ", m_GameLogic.GetCardValue(i, j));
+                        Console.Write(@" {0} ", gameGrid[i, j]);
                     }
                 }
                 Console.WriteLine();
             }
         }
 
-        private void playComputerTurn()
+        private void  playComputerTurn()
         {
             throw new NotImplementedException();
         }
@@ -180,16 +183,16 @@ In order to play against the computer pls type 1."));
                 inputString = Console.ReadLine();
                 int.TryParse(inputString, out userChoice);
             } while (userChoice != 0 && userChoice != 1);
-            players.Add(new Player(0, playerName, !true));
+            players.Add(new Player(0, playerName, true));
             if (userChoice == 0)
             {
-                players.Add(new Player(1, "Computer", true));
+                players.Add(new Player(1, "Computer", !true));
             }
             else
             {
                 Console.WriteLine("Player 2, Please Type your name:");
                 playerName = Console.ReadLine();
-                players.Add(new Player(1, playerName, !true));
+                players.Add(new Player(1, playerName, true));
             }
             return players;
         }
@@ -209,27 +212,6 @@ In order to play against the computer pls type 1."));
             return i_NumInput;
         }
 
-        public void InitGrid()
-        {
-            int rowsCount = getDimension("rows");
-            int colCount = getDimension("columns");
-            m_Grid = new Cell[rowsCount, colCount];
-            Random random = new Random();
-            int row, col;
-            for(int i = 0; i< (rowsCount*colCount) / 2; i++)
-            {
-                char currentLetter = (char)(i + 'A');
-                for (int j = 0; j < 2; j++)
-                {
-                    do
-                    {
-                        row = random.Next(rowsCount);
-                        col = random.Next(colCount);
-                    } while (m_Grid[row, col] != null);
-                    m_Grid[row, col] = new Cell(currentLetter, true);
-                }
-            }
-        }
         
         public void GetGrid()
         {

@@ -13,9 +13,9 @@ namespace B20_Ex02_1
 
         public Cell[,] m_Grid { get => m_Grid; set => m_Grid = value; }
 
-        public Logic(Cell [,] i_Grid , List<Player> i_Players)
+        public Logic()
         {
-            m_Grid = i_Grid;
+            
             m_Players = i_Players;
         }
       
@@ -79,10 +79,6 @@ namespace B20_Ex02_1
             throw new NotImplementedException();
         }
 
-        internal object GetCardChar(int i, int j)
-        {
-            throw new NotImplementedException();
-        }
 
         internal object GetCardValue(int i, int j)
         {
