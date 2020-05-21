@@ -11,6 +11,7 @@ namespace B20_Ex02_1
     {
 
         private Logic m_GameLogic;
+        private const readonly int SLEEP_TIME = 2000;
 
         public Cli()
         {
@@ -20,18 +21,30 @@ namespace B20_Ex02_1
         // GET ONLY THE INPUT FROM USER, LOGIX CHECKS NUMBER AND SUM OF ALL GRID CELL
 
 
-        public int GetDimension(string i_DimensionNameForUserInput)
+        public void InitializeGrid()
         {
-            string i_StrInput;
-            int i_NumInput;
+            int rowsCount = 0, colsCount = 0;
+            do
+            {
+                rowsCount = getDimension("rows");
+                colsCount = getDimension("columns");
+            }
+            while (!m_GameLogic.TryCreateGrid(rowsCount, colsCount));
+            
+        }
+
+        private int getDimension(string i_DimensionNameForUserInput)
+        {
+            string dimensionInput;
+            int dimension;
             do
             {
                 Console.WriteLine(String.Format(@"Enter number of {0} , between 4 and 6 (include) :", i_DimensionNameForUserInput));
-                i_StrInput = Console.ReadLine();
-                int.TryParse(i_StrInput, out i_NumInput);
+                dimensionInput = Console.ReadLine();
             }
-            while (m_GameLogic.TryCreateGrid(i_NumInput));
-            return i_NumInput;
+            while(!int.TryParse(dimensionInput, out dimension));
+            
+            return dimension;
         }
        
         public void Start()
@@ -46,39 +59,65 @@ namespace B20_Ex02_1
             {
                 playerTurnId = m_GameLogic.GetPlayerIdTurn();
 
-                if (m_GameLogic.GetPlayer(playerTurnId).IsHuman) {
+                if (m_GameLogic.GetPlayer(playerTurnId).IsHuman)
+                {
                     playHumanTurn(playerTurnId);
                 }
-                else {
+                else
+                {
                     playComputerTurn();
                 }
-                Console.Clear(); // need to use guys dll
+               //TODO:: get guys dll for cleaning screen
                 printCurrentGrid();
             }
+            announceWinner();
+        }
+
+        private void announceWinner()
+        {
+            Player winner = m_GameLogic.GetWinner();
+            Console.WriteLine(@"Congratulations {0}
+You won the game!", winner.GetName());
         }
 
         private void playHumanTurn(int i_playerId)
         {
-            List<int> playersCardsPicks = new List<int>(m_GameLogic.GetSameCardsCount());
-
-            playersCardsPicks[0] = (int)getPlayerPick(m_GameLogic.GetPlayer(i_playerId).Name,
-                "row", (char)1, (char)m_GameLogic.GetRowsLength());
-            //playersCardsPicks[1] = getPlayerPick(m_GameManager.GetPlayer()i_playerId).GetName(),
-            //    "column", 'A', (char)('A' + m_GameManager.GetColsLength());
-
-            bool isHit = m_GameLogic.CheckIsHit(playersCardsPicks);
+            int[] firstPick = new int[2];
+            int[] secondPick = new int[2];
+            firstPick = getUserPick();
+            m_GameLogic.UpdatePickVisibilit(firstPick[0], firstPick[1]);
+            secondPick = getUserPick();
+            bool isHit = m_GameLogic.CheckIsHit(firstPick[0], firstPick[1], secondPick[0], secondPick[1]);
 
             if (!isHit)
             {
-                printCurrentGrid(playersCardsPicks);
-                System.Threading.Thread.Sleep(2000); // nedd to check if this the way guy asked
+                //TODO :: how do you want to show the cards for two seconds?
+                printCurrentGrid(firstPick, secondPick);
+                System.Threading.Thread.Sleep(SLEEP_TIME);
                 Console.Clear(); // need to use guys dll
             }
         }
 
-        private void printCurrentGrid(List<int> playersCardsPicks = null)
+        private int[] getUserPick()
         {
-            // need to get the matrix  instance
+            int rowIndex = 0;
+            char colIndexInAlphBet;
+            string userInput;
+            do { Console.WriteLine("Type your row choice for the card between 1 and {0}: ", m_GameLogic.GetRowsLength());
+                userInput = Console.ReadLine();
+            }
+            while(!int.TryParse(userInput, out rowIndex) && rowIndex > m_GameLogic.GetRowsLength());
+            do
+            {
+                Console.WriteLine("Type your row choice for the card between 1 and {0}: ", m_GameLogic.GetColsLength());
+                userInput = Console.ReadLine();
+            }
+            while (!char.TryParse(userInput, out colIndexInAlphBet) && (int)colIndexInAlphBet > m_GameLogic.GetColsLength());
+            return new int[]{ rowIndex, (int)colIndexInAlphBet };
+        }
+
+        private void printCurrentGrid(int[] i_FirstCardIndexes = null, int[] i_SecondCardIndexes = null)
+        {
             Cell[,] gameGrid = m_GameLogic.m_Grid;
 
 
@@ -86,13 +125,14 @@ namespace B20_Ex02_1
             {
                 for (int j = 0; j < m_GameLogic.GetColsLength(); j++)
                 {
-                    if(playersCardsPicks!= null && i == playersCardsPicks[0] && j == playersCardsPicks[j])
+                    if ((gameGrid[i, j].IsVisable == !true) || (i_FirstCardIndexes != null && i_SecondCardIndexes != null) &&
+                        (i == i_FirstCardIndexes[0] && j == i_FirstCardIndexes[1] || i == i_SecondCardIndexes[0] && j == i_SecondCardIndexes[1]))
                     {
-                        Console.Write(@" {0} ", gameGrid[i ,j]);
+                        Console.Write(@"| {0} |", gameGrid[i ,j]);
                     }
                     else
                     {
-                        Console.Write(@" {0} ", gameGrid[i, j]);
+                        Console.Write(@"|   |", gameGrid[i, j]);
                     }
                 }
                 Console.WriteLine();
@@ -103,21 +143,7 @@ namespace B20_Ex02_1
         {
             throw new NotImplementedException();
         }
-
-        private char getPlayerPick(string i_PlayerName,string i_dimensionString, char i_pickHighLimitToPrint, char i_pickLowLimitToPrint)
-        {
-            string usersInput;
-            char inputChoice;
-            do
-            {
-                Console.WriteLine(@"Player {0}, Please type your wanted {1} num from {2} to {3}",
-                 i_PlayerName,i_dimensionString, i_pickLowLimitToPrint, i_pickHighLimitToPrint);
-                usersInput = Console.ReadLine();
-                char.TryParse(usersInput, out inputChoice);
-            } while (inputChoice < i_pickLowLimitToPrint || inputChoice > i_pickHighLimitToPrint);
-            return inputChoice;
-        }
-    
+        
      
 
         private List<Player> InitPlayersProps()
