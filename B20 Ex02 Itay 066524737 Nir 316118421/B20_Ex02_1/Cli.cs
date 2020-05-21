@@ -9,19 +9,31 @@ namespace B20_Ex02_1
 {
     public class Cli 
     {
-
+#region props
         private Logic m_GameLogic;
-        private const readonly int SLEEP_TIME = 2000;
-
+        private const int SLEEP_TIME = 2000;
+        #endregion
+#region c'tor
         public Cli()
         {
             m_GameLogic = new Logic();
             
         }
-        // GET ONLY THE INPUT FROM USER, LOGIX CHECKS NUMBER AND SUM OF ALL GRID CELL
+        #endregion
+#region Public Methods
+        public void InitializeGame()
+        {
+            initializePlayers();
+            initializeGrid();
+        }
 
-
-        public void InitializeGrid()
+        public void Start()
+        {
+            playGame();
+        }
+        #endregion
+#region Private Methods
+        private void initializeGrid()
         {
             int rowsCount = 0, colsCount = 0;
             do
@@ -47,10 +59,7 @@ namespace B20_Ex02_1
             return dimension;
         }
        
-        public void Start()
-        {
-            playGame();
-        }
+    
 
         private void playGame() {
             int playerTurnId = 0;
@@ -76,8 +85,11 @@ namespace B20_Ex02_1
         private void announceWinner()
         {
             Player winner = m_GameLogic.GetWinner();
-            Console.WriteLine(@"Congratulations {0}
+            if (winner != null)
+            {
+                Console.WriteLine(@"Congratulations {0}
 You won the game!", winner.GetName());
+            }
         }
 
         private void playHumanTurn(int i_playerId)
@@ -132,7 +144,7 @@ You won the game!", winner.GetName());
                     }
                     else
                     {
-                        Console.Write(@"|   |", gameGrid[i, j]);
+                        Console.Write(@"|   |");
                     }
                 }
                 Console.WriteLine();
@@ -144,14 +156,11 @@ You won the game!", winner.GetName());
             throw new NotImplementedException();
         }
         
-     
-
-        private List<Player> InitPlayersProps()
+        private void initializePlayers()
         {
             string inputString;
             string playerName;
             int userChoice;
-            List<Player> players = new List<Player>();
             Console.WriteLine("Please Type your name:");
             playerName = Console.ReadLine();
             do
@@ -160,22 +169,19 @@ You won the game!", winner.GetName());
                 inputString = Console.ReadLine();
                 int.TryParse(inputString, out userChoice);
             } while (userChoice != 0 && userChoice != 1);
-            players.Add(new Player(0, playerName, true));
+            m_GameLogic.AddNewPlayer(new Player(0, playerName, true));
             if (userChoice == 0)
             {
-                players.Add(new Player(1, "Computer", !true));
+                m_GameLogic.AddNewPlayer(new Player(1, "Computer", !true));
             }
             else
             {
                 Console.WriteLine("Player 2, Please Type your name:");
                 playerName = Console.ReadLine();
-                players.Add(new Player(1, playerName, true));
+                m_GameLogic.AddNewPlayer(new Player(1, playerName, true));
             }
-
-            /// pass to logic list with the players
-            return players;
+           
         }
-        
-
+#endregion
     }
 }
