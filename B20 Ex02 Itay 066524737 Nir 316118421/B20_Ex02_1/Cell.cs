@@ -10,13 +10,14 @@ namespace B20_Ex02_1
     {
         private char m_Letter;
         private bool m_IsVisable;
-        private int m_PlayerId = -1; // need to check if its is ok to init the var with -1
+        private int m_PlayerId ; 
 
 
         public Cell(char i_CurrentLetter, bool i_IsVisible)
         {
             Letter = i_CurrentLetter;
             m_IsVisable = i_IsVisible;
+            m_PlayerId = -1;
         }
 
 

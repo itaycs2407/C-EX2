@@ -15,46 +15,27 @@ namespace B20_Ex02_1
 
         public Logic()
         {
-            
-            m_Players = i_Players;
+           
         }
-      
-      private void Initilize()
-        {
-        }
+     
 
-        private bool checkForEquaility(Cell i_First, Cell i_Second)
-        {
-            return i_First.Item == i_Second.Item;
-        }
-
-        internal char GetColsLength()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal bool IsValidGrid(int i_NumInput)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal bool IsValidPlayersCount(int playersCountFromInput)
+        internal bool TryCreateGrid(int i_NumInput)
         {
             throw new NotImplementedException();
         }
 
         
-        internal void AddNewPlayer(Player player)
+        internal void AddNewPlayer(Player player) // WILL UPDATE
         {
             throw new NotImplementedException();
         }
 
-        internal int GetIdPlayerTurn()
+        internal int GetPlayerIdTurn()
         {
             throw new NotImplementedException();
         }
 
-        internal Player GetPlayer(int playerTurnId)
+        internal Player GetPlayerType(int playerTurnId)
         {
             throw new NotImplementedException();
         }
@@ -65,11 +46,6 @@ namespace B20_Ex02_1
         }
 
         internal int GetSameCardsCount()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal char GetRowsLength()
         {
             throw new NotImplementedException();
         }
@@ -94,13 +70,13 @@ namespace B20_Ex02_1
 
             return !((sumOfHits * 2) == numberOfTotalCells);
         }
-        public void UpdateCell(int i_Row, int i_Col)
+        public void UpdateCellVisability(int i_Row, int i_Col)
         {
             m_Grid[i_Row, i_Col].IsVisable = !m_Grid[i_Row, i_Col].IsVisable;
         }
         private bool checkForEquaility(int i_RowFirstCell, int i_ColFirstCell, int i_RowSecondCell, int i_Coli_RowSecondCell )
         {
-            return m_Grid[i_RowFirstCell, i_ColFirstCell].Item == m_Grid[i_RowSecondCell, i_Coli_RowSecondCell].Item;
+            return m_Grid[i_RowFirstCell, i_ColFirstCell].Letter == m_Grid[i_RowSecondCell, i_Coli_RowSecondCell].Letter;
         }
         public void AddHit(Player i_Ply)
         {

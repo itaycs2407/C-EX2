@@ -10,31 +10,14 @@ namespace B20_Ex02_1
     public class Cli 
     {
 
-        private int m_Rows;
-        private int m_Cols;
         private Logic m_GameLogic;
-        private Cell[,] m_Grid;
 
         public Cli()
         {
             m_GameLogic = new Logic();
-            Console.WriteLine(@"Hello and welcome to our mmory cards game!");
-            m_GameLogic.AddNewPlayer(createPlayer(!true));
-            switch (GetPlayersCount())
-            {
-                case 1:
-                    {
-                        m_GameLogic.AddNewPlayer(createPlayer(!true));
-                        break;
-                    }
-                default:
-                    {
-                        m_GameLogic.AddNewPlayer(createPlayer(true));
-                        break;
-                    }
-            }
+            
         }
-
+        // GET ONLY THE INPUT FROM USER, LOGIX CHECKS NUMBER AND SUM OF ALL GRID CELL
         public int GetDimension(string i_DimensionNameForUserInput)
         {
             string i_StrInput;
@@ -45,44 +28,10 @@ namespace B20_Ex02_1
                 i_StrInput = Console.ReadLine();
                 int.TryParse(i_StrInput, out i_NumInput);
             }
-            while (m_GameLogic.IsValidGrid(i_NumInput));
+            while (m_GameLogic.TryCreateGrid(i_NumInput));
             return i_NumInput;
         }
-        
-        public void InitPlayers(int humanPlayersCount, int computerPlayersCount)
-        {
-            for(int i = 0; i< humanPlayersCount; i++)
-            {
-                m_GameLogic.AddNewPlayer(createPlayer(true));
-            }
-            for(int i =0; i < computerPlayersCount; i++)
-            {
-                m_GameLogic.AddNewPlayer(createPlayer(!true));
-            }
-        }
-
-        private Player createPlayer(bool v)
-        {
-            Console.WriteLine("Hi Player, please type your name");
-            return Player;
-        }
-
-        public int GetPlayersCount()
-        {
-            string i_StrInput;
-            int playersCountFromInput;
-
-            do
-            {
-                Console.WriteLine(String.Format(@"Enter number of players to play this game,
-In order to play against the computer pls type 1."));
-                i_StrInput = Console.ReadLine();
-                int.TryParse(i_StrInput, out playersCountFromInput);
-            }
-            while (m_GameLogic.IsValidPlayersCount(playersCountFromInput));
-
-            return playersCountFromInput;
-        }
+       
         public void Start()
         {
             playGame();
@@ -90,11 +39,12 @@ In order to play against the computer pls type 1."));
 
         private void playGame() {
             int playerTurnId = 0;
+
             while (m_GameLogic.IsGameOn())
             {
-                playerTurnId = m_GameLogic.GetIdPlayerTurn();
+                playerTurnId = m_GameLogic.GetPlayerIdTurn();
 
-                if (m_GameLogic.GetPlayer(playerTurnId).IsHuman) {
+                if (m_GameLogic.GetPlayerType(playerTurnId).IsHuman) {
                     playHumanTurn(playerTurnId);
                 }
                 else {
@@ -102,7 +52,6 @@ In order to play against the computer pls type 1."));
                 }
                 Console.Clear(); // need to use guys dll
                 printCurrentGrid();
-                m_GameLogic.FlipTurn(playerTurnId);
             }
         }
 
@@ -110,7 +59,7 @@ In order to play against the computer pls type 1."));
         {
             List<int> playersCardsPicks = new List<int>(m_GameLogic.GetSameCardsCount());
 
-            playersCardsPicks[0] = (int)getPlayerPick(m_GameLogic.GetPlayer(i_playerId).Name,
+            playersCardsPicks[0] = (int)getPlayerPick(m_GameLogic.GetPlayerType(i_playerId).Name,
                 "row", (char)1, (char)m_GameLogic.GetRowsLength());
             //playersCardsPicks[1] = getPlayerPick(m_GameManager.GetPlayer()i_playerId).GetName(),
             //    "column", 'A', (char)('A' + m_GameManager.GetColsLength());
@@ -127,7 +76,7 @@ In order to play against the computer pls type 1."));
 
         private void printCurrentGrid(List<int> playersCardsPicks = null)
         {
-
+            // need to get the matrix  instance
             Cell[,] gameGrid = m_GameLogic.m_Grid;
 
 
@@ -194,56 +143,11 @@ In order to play against the computer pls type 1."));
                 playerName = Console.ReadLine();
                 players.Add(new Player(1, playerName, true));
             }
+
+            /// pass to logic list with the players
             return players;
         }
-            
-        private int getPlayersCount()
-        {
-            string i_StrInput;
-            int i_NumInput;
-            do
-            {
-                Console.WriteLine(String.Format(@"Enter number of players to play this game,\n In order to play against the computer pls type 1."));
-                i_StrInput = Console.ReadLine();
-                int.TryParse(i_StrInput, out i_NumInput);
-            }
-            while ((i_NumInput > 6 || i_NumInput < 4) && (i_NumInput % 2 != 0));
-
-            return i_NumInput;
-        }
-
         
-        public void GetGrid()
-        {
-            m_Rows = getDimension("rows");
-            m_Cols = getDimension("columns");
-            m_Grid = new Cell[m_Rows, m_Cols];
-        }
-
-        private int getDimension(string i_DimensionNameForUserInput)
-        {
-            string i_StrInput;
-            int i_NumInput;
-            do
-            {
-                Console.WriteLine(String.Format(@"Enter number of {0} , between 4 and 6 (include) :", i_DimensionNameForUserInput));
-                i_StrInput = Console.ReadLine();
-                int.TryParse(i_StrInput, out i_NumInput);
-            }
-            while (i_NumInput > 6 || i_NumInput < 4);
-
-            return i_NumInput;
-        }
-
-        public void GetInputFromUser()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void getPlayersDetails()
-        {
-            throw new NotImplementedException();
-        }
 
     }
 }

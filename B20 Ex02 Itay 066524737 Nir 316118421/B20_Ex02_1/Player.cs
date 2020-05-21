@@ -17,6 +17,8 @@ namespace B20_Ex02_1
             m_Id = i_Id;
             m_Name = i_Name;
             m_IsHuman = i_IsHuman;
+            m_NumOfHits = 0;
+
         }
 
         public int NumOfHits { get => m_NumOfHits; set => m_NumOfHits = value; }
