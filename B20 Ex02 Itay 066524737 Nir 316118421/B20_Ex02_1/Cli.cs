@@ -18,6 +18,8 @@ namespace B20_Ex02_1
             
         }
         // GET ONLY THE INPUT FROM USER, LOGIX CHECKS NUMBER AND SUM OF ALL GRID CELL
+
+
         public int GetDimension(string i_DimensionNameForUserInput)
         {
             string i_StrInput;
