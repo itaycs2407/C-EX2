@@ -44,7 +44,7 @@ namespace B20_Ex02_1
             {
                 playerTurnId = m_GameLogic.GetPlayerIdTurn();
 
-                if (m_GameLogic.GetPlayerType(playerTurnId).IsHuman) {
+                if (m_GameLogic.GetPlayer(playerTurnId).IsHuman) {
                     playHumanTurn(playerTurnId);
                 }
                 else {
@@ -59,7 +59,7 @@ namespace B20_Ex02_1
         {
             List<int> playersCardsPicks = new List<int>(m_GameLogic.GetSameCardsCount());
 
-            playersCardsPicks[0] = (int)getPlayerPick(m_GameLogic.GetPlayerType(i_playerId).Name,
+            playersCardsPicks[0] = (int)getPlayerPick(m_GameLogic.GetPlayer(i_playerId).Name,
                 "row", (char)1, (char)m_GameLogic.GetRowsLength());
             //playersCardsPicks[1] = getPlayerPick(m_GameManager.GetPlayer()i_playerId).GetName(),
             //    "column", 'A', (char)('A' + m_GameManager.GetColsLength());
