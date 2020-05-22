@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.PerformanceData;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using System.Threading;
 
 namespace B20_Ex02_1
 {
     public class Logic
     {
+        public Random rnd = new Random();
         private List<Player> m_Players = null;
         private int m_CurrentActivePlayerId = 0;
 
+        private AiEngine m_AiEngine;
         private Cell[,] m_GameGrid;
         public Cell[,] GameGrid { get => m_GameGrid; set => m_GameGrid = value; }
         public int CurrentActivePlayerId { get => m_CurrentActivePlayerId; set => m_CurrentActivePlayerId = value; }
@@ -114,19 +118,36 @@ namespace B20_Ex02_1
             return losingPlayer;
         }
 
-        public void MakeComputerAiMove()
+        public void MakeComputerAiMove(int i_FirstCardRow, int i_FirstCardCol, ref int i_SecondCardRow, ref int i_SecondCardCol)
         {
+            //get the most popular distance
+            int mostPopularDistance = m_AiEngine.Distances.ToList().IndexOf(m_AiEngine.Distances.Max());
 
+            // try to find educated match for five times, if dont find any match, will try in the regular way
+            int counterForEductedGuessTry = 5;
+            bool educatedGuess = !true;
+            do
+            {
+                i_SecondCardRow = rnd.Next(0, GetGridRows());
+                i_SecondCardCol = rnd.Next(0, GetGridCols());
+                educatedGuess = TryFlipCard(i_SecondCardRow, i_SecondCardCol);
+                counterForEductedGuessTry--;
+            } while (counterForEductedGuessTry > 0 && !educatedGuess);
+
+            //count <=0 : try to find educated gess for five times and hasnt succed. try now in the naive way
+            if (counterForEductedGuessTry <= 0 && !educatedGuess)
+            {
+                MakeComputerMove(ref i_SecondCardRow,ref  i_SecondCardCol);
+            }
         }
 
         public void MakeComputerMove(ref int i_Row, ref int i_Col)
         {
-            Random rnd = new Random();
             do
             {
                 i_Row = rnd.Next(0, GetGridRows());
                 i_Col = rnd.Next(0, GetGridCols());
-            } while (!TryFlipCard(i_Col, i_Col));
+            } while (!TryFlipCard(i_Row, i_Col));
         }
      
         public int GetGridCols()
@@ -164,25 +185,31 @@ namespace B20_Ex02_1
 
 
         // get player match cells. check the cells equaility. if true - > update the cell with the player id
-        public bool TryUpdateForEquality( int i_RowFirstCell, int i_ColFirstCell, int i_RowSecondCell, int i_ColSecondCell )
+        
+        public bool TryUpdateForEquality(int i_RowFirstCell, int i_ColFirstCell, int i_RowSecondCell, int i_ColSecondCell)
         {
             // check if the cordinate are not eaqual
             bool isValid = !(i_RowFirstCell == i_RowSecondCell) && (i_ColSecondCell == i_RowSecondCell);
+            
             // check valid cordinate
             isValid = isValid && (checkLimits(i_RowFirstCell, 4, 6) && checkLimits(i_ColFirstCell, 4, 6)) && (checkLimits(i_RowSecondCell, 4, 6) && checkLimits(i_ColSecondCell, 4, 6));
+            
             if (isValid)
             {
                 if ((m_GameGrid[i_RowFirstCell, i_ColFirstCell].Letter == m_GameGrid[i_RowSecondCell, i_ColSecondCell].Letter))
                 {
                     Player currentPlayer = GetActivePlayer();
 
-                   
                     // update cells match (which player discover this couple)
                     updatePlayerCellFinder(currentPlayer, i_RowFirstCell, i_ColFirstCell);
                     updatePlayerCellFinder(currentPlayer, i_RowSecondCell, i_ColSecondCell);
 
                     // update player hits
                     addHit(currentPlayer);
+
+                    //update the distance for AI use
+                    int currentDistanceForTwoCells = m_AiEngine.CalculteDistanceForTwoCells(i_RowFirstCell, i_ColFirstCell, i_RowSecondCell, i_ColSecondCell);
+                    m_AiEngine.UpdateDistance(currentDistanceForTwoCells);
                 }
                 else
                 {
