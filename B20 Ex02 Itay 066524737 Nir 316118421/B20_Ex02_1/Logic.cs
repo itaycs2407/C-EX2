@@ -181,7 +181,6 @@ namespace B20_Ex02_1
         // update the cells property in which player find its match
         private void updatePlayerCellFinder(Player i_Ply, int i_Row, int i_Col)
         {
-
             m_GameGrid[i_Row, i_Col].PlayerId = i_Ply.Id;
         }
 
