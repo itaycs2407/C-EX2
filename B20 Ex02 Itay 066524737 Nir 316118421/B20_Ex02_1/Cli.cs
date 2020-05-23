@@ -62,16 +62,16 @@ namespace B20_Ex02_1
     
 
         private void playGame() {
-            int playerTurnId = 0;
+            Player currentPlayingPlayer;
 
             while (m_GameLogic.IsGameOn())
             {
                 //Change To GetPlayerTurn and get a Player
-                playerTurnId = m_GameLogic.GetPlayerIdTurn();
+                currentPlayingPlayer = m_GameLogic.GetActivePlayer();
 
-                if (m_GameLogic.GetPlayer(playerTurnId).IsHuman)
+                if (currentPlayingPlayer.IsHuman)
                 {
-                    playHumanTurn(playerTurnId);
+                    playHumanTurn(currentPlayingPlayer.Id);
                 }
                 else
                 {
@@ -119,7 +119,7 @@ You won the game!", winner.Name);
         private int[] getUserPick()
         {
             int rowIndex = 0;
-            char colIndexInAlphBet;
+            char colIndexInAlphBet = ' ';
             string userInput;
             int[] userPicks = new int[2];
             bool isQuit = false;
@@ -127,12 +127,12 @@ You won the game!", winner.Name);
                 userInput = Console.ReadLine();
                 isQuit = m_GameLogic.TryQuitGame(userInput);
             }
-            while((!TryQuitGame) ||(!int.TryParse(userInput, out rowIndex) && rowIndex > m_GameLogic.GetGridRows()));
+            while((!isQuit) ||(!int.TryParse(userInput, out rowIndex) && rowIndex > m_GameLogic.GetGridRows()));
             userPicks[0] = isQuit ? -1 : rowIndex;
 
-            while(!isQuit && !char.TryParse(userInput, out colIndexInAlphBet) && (int)colIndexInAlphBet > m_GameLogic.GetColsLength())
+            while(!isQuit && !char.TryParse(userInput, out colIndexInAlphBet) && (int)colIndexInAlphBet > m_GameLogic.GetGridCols())
             {
-                Console.WriteLine("Type your col choice for the card between A and {0}: ", (char)m_GameLogic.GetColsLength());
+                Console.WriteLine("Type your col choice for the card between A and {0}: ", (char)m_GameLogic.GetGridCols());
                 userInput = Console.ReadLine();
                 isQuit = m_GameLogic.TryQuitGame(userInput); 
             }
@@ -142,12 +142,12 @@ You won the game!", winner.Name);
 
         private void printCurrentGrid(int[] i_FirstCardIndexes = null, int[] i_SecondCardIndexes = null)
         {
-            Cell[,] gameGrid = m_GameLogic.m_Grid;
+            Cell[,] gameGrid = m_GameLogic.GameGrid;
 
 
             for (int i = 0; i < m_GameLogic.GetGridRows(); i++)
             {
-                for (int j = 0; j < m_GameLogic.GetColsLength(); j++)
+                for (int j = 0; j < m_GameLogic.GetGridCols(); j++)
                 {
                     if ((gameGrid[i, j].IsVisable == !true) || (i_FirstCardIndexes != null && i_SecondCardIndexes != null) &&
                         (i == i_FirstCardIndexes[0] && j == i_FirstCardIndexes[1] || i == i_SecondCardIndexes[0] && j == i_SecondCardIndexes[1]))
