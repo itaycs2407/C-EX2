@@ -82,7 +82,7 @@ namespace B20_Ex02_1
         public bool TryFlipCard(int i_Row, int i_Col)
         {
             bool flipSuccess = !true;
-            if (checkLimits(i_Row, 0, GetGridRows() - 1) && checkLimits(i_Col, 0, GetGridCols() - 1))
+            if (checkLimits(i_Row, 0, GetGridRows()) && checkLimits(i_Col, 0, GetGridCols()))
             {
                 if(m_GameGrid[i_Row, i_Col].IsVisable == !true)
                 {
@@ -103,7 +103,7 @@ namespace B20_Ex02_1
                 m_Players = new List<Player>();
                 m_Players.Add(i_Player);
             }
-            if (m_Players.Count < 2)
+            else if (m_Players.Count < 2)
             {
                 m_Players.Add(i_Player);
             }
@@ -192,14 +192,29 @@ namespace B20_Ex02_1
 
         public bool IsGameOn()
         {
-            int sumOfHits = 0;
-            int numberOfTotalCells = m_GameGrid.GetLength(0) * m_GameGrid.GetLength(1);
-            foreach (Player ply in m_Players)
+            bool foundInvisible = false;
+            if (!IsGameOver)
             {
-                sumOfHits += ply.NumOfHits;
+                for (int i = 0; i < GetGridRows() && !foundInvisible; i++)
+                {
+                    for (int j = 0; j < GetGridCols() && !foundInvisible; j++)
+                    {
+                        if (!m_GameGrid[i, j].IsVisable)
+                        {
+                            foundInvisible = true;
+                        }
+                    }
+                }
             }
+            return foundInvisible;
+            //int sumOfHits = 0;
+            //int numberOfTotalCells = m_GameGrid.GetLength(0) * m_GameGrid.GetLength(1);
+            //foreach (Player ply in m_Players)
+            //{
+            //    sumOfHits += ply.NumOfHits;
+            //}
 
-            return !((sumOfHits * 2) == numberOfTotalCells);
+            //return !((sumOfHits * 2) == numberOfTotalCells);
         }
 
         // get player match cells. check the cells equaility. if true - > update the cell with the player id
@@ -208,12 +223,12 @@ namespace B20_Ex02_1
         {
             // check if the cordinate are not eaqual
             //CR :: had a mistake with the ! placement.. 
-            bool isValid = !((i_RowFirstCell == i_RowSecondCell) && (i_ColSecondCell == i_RowSecondCell));
+            bool isValid = !((i_RowFirstCell == i_RowSecondCell) && (i_ColSecondCell == i_ColFirstCell));
 
             // check valid cordinate
             //CR :: Critical funcionality error - its not always high and low as 4 and 6 - its positive and less then row/col length
-            isValid = isValid && (checkLimits(i_RowFirstCell, 0, GetGridRows() - 1) && checkLimits(i_ColFirstCell, 0, GetGridCols() -1))
-                && (checkLimits(i_RowSecondCell, 0, GetGridRows() - 1) && checkLimits(i_ColSecondCell, 0, GetGridCols() - 1));
+            isValid = isValid && (checkLimits(i_RowFirstCell, 0, GetGridRows()) && checkLimits(i_ColFirstCell, 0, GetGridCols() ))
+                && (checkLimits(i_RowSecondCell, 0, GetGridRows()) && checkLimits(i_ColSecondCell, 0, GetGridCols()));
 
             if (isValid)
             {
@@ -284,7 +299,7 @@ namespace B20_Ex02_1
 
         private void addHit(Player i_Ply)
         {
-            m_Players.Find(ply => ply == i_Ply).NumOfHits++;
+            m_Players.FirstOrDefault(ply => ply.Id == i_Ply.Id).NumOfHits++;
         }
 
         #endregion

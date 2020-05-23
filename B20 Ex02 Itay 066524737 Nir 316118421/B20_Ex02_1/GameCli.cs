@@ -32,7 +32,7 @@ namespace B20_Ex02_1
             //CR ::Guys dll
             System.Console.Clear();
             Console.WriteLine("Enjoy the match :)");
-            playGame();
+            playGames();
         }
         #endregion
 #region Private Methods
@@ -62,7 +62,22 @@ namespace B20_Ex02_1
             return dimension;
         }
        
-    
+        private void playGames()
+        {
+            string rematchUserDesicion = "1";
+            playGame();
+            Console.WriteLine(@"Well, thats it.. or you can press 1 if {0} wants to win a rematch! (else press anything else..)", m_GameLogic.GetLoser().Name);
+            rematchUserDesicion = Console.ReadLine();
+
+            while (rematchUserDesicion.Equals("1"))
+            {
+                InitializeGame();
+                playGame();
+                Console.WriteLine(@"Well, thats it.. or you can press 1 if {0} wants to win a rematch! (else press anything else..)", m_GameLogic.GetLoser().Name);
+                rematchUserDesicion = Console.ReadLine();
+
+            }
+        }
 
         private void playGame() {
             Player currentPlayingPlayer;
