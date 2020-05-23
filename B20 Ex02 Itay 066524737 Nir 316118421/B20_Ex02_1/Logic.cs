@@ -13,11 +13,12 @@ namespace B20_Ex02_1
         public Random rnd = new Random();
         private List<Player> m_Players = null;
         private int m_CurrentActivePlayerId = 0;
-
+        private bool m_IsGameOver = !true;
         private AiEngine m_AiEngine;
         private Cell[,] m_GameGrid;
         public Cell[,] GameGrid { get => m_GameGrid; set => m_GameGrid = value; }
         public int CurrentActivePlayerId { get => m_CurrentActivePlayerId; set => m_CurrentActivePlayerId = value; }
+        public bool IsGameOver { get => m_IsGameOver; set => m_IsGameOver = value; }
 
         // check how to define bool inside funcyion
         public bool TryCreateGrid(int i_Rows, int i_Cols)
@@ -139,8 +140,8 @@ namespace B20_Ex02_1
         public bool TryQuitGame(string i_UserInput)
         {
             string userInputAfterTrim = i_UserInput.Trim(' ').ToUpper();
-           
-            return userInputAfterTrim.Contains('Q');
+            m_IsGameOver = userInputAfterTrim.Contains('Q');
+            return m_IsGameOver;
         }
 
         public void MakeComputerMove(ref int i_Row, ref int i_Col)
