@@ -23,6 +23,7 @@ namespace B20_Ex02_1
 #region Public Methods
         public void InitializeGame()
         {
+            m_GameLogic = new Logic();
             initializePlayers();
             initializeGrid();
         }
@@ -66,14 +67,14 @@ namespace B20_Ex02_1
         {
             string rematchUserDesicion = "1";
             playGame();
-            Console.WriteLine(@"Well, thats it.. or you can press 1 if {0} wants to win a rematch! (else press anything else..)", m_GameLogic.GetLoser().Name);
+            Console.WriteLine(String.Format(@"Well, thats it.. or you can press 1 if {0} wants to win a rematch! (else press anything else..)", m_GameLogic.GetLoser().Name));
             rematchUserDesicion = Console.ReadLine();
 
             while (rematchUserDesicion.Equals("1"))
             {
                 InitializeGame();
                 playGame();
-                Console.WriteLine(@"Well, thats it.. or you can press 1 if {0} wants to win a rematch! (else press anything else..)", m_GameLogic.GetLoser().Name);
+                Console.WriteLine(String.Format(@"Well, thats it.. or you can press 1 if {0} wants to win a rematch! (else press anything else..)", m_GameLogic.GetLoser().Name));
                 rematchUserDesicion = Console.ReadLine();
 
             }
@@ -107,8 +108,8 @@ namespace B20_Ex02_1
             Player winner = m_GameLogic.GetWinner();
             if (winner != null)
             {
-                Console.WriteLine(@"Congratulations {0}
-You won the game!", winner.Name);
+                Console.WriteLine(String.Format(@"Congratulations {0}
+You won the game!", winner.Name));
             }
         }
 
@@ -117,34 +118,40 @@ You won the game!", winner.Name);
             int[] firstPick = new int[2];
             int[] secondPick = new int[2];
             Player activePlayer = m_GameLogic.GetActivePlayer();
-            Console.WriteLine(@"{0}, you are up again!
-Just in case you forgot - so far you have {1} points", activePlayer.Name, activePlayer.NumOfHits);
+            Console.WriteLine(String.Format(String.Format(@"{0}, you are up again!
+Just in case you forgot - so far you have {1} points", activePlayer.Name, activePlayer.NumOfHits)));
             firstPick = handlePick();
-            printCurrentGrid();
-            secondPick = handlePick();
-            while (secondPick[0] == firstPick[0] && secondPick[1] == firstPick[1])
+            if (!m_GameLogic.IsGameOver)
             {
-                Console.WriteLine("You are not supposed to pick the same card twice! Please do it again!");
-                firstPick = handlePick();
                 printCurrentGrid();
                 secondPick = handlePick();
-            }
-            bool isHit = m_GameLogic.TryUpdateForEquality(firstPick[0], firstPick[1], secondPick[0], secondPick[1]);
+                if (!m_GameLogic.IsGameOver)
+                {
+                    while (secondPick[0] == firstPick[0] && secondPick[1] == firstPick[1])
+                    {
+                        Console.WriteLine("You are not supposed to pick the same card twice! Please do it again!");
+                        firstPick = handlePick();
+                        printCurrentGrid();
+                        secondPick = handlePick();
+                    }
+                    bool isHit = m_GameLogic.TryUpdateForEquality(firstPick[0], firstPick[1], secondPick[0], secondPick[1]);
 
-            if (!isHit)
-            {
-                printCurrentGrid(firstPick, secondPick);
-                System.Threading.Thread.Sleep(SLEEP_TIME);
-               
+                    if (!isHit)
+                    {
+                        printCurrentGrid(firstPick, secondPick);
+                        System.Threading.Thread.Sleep(SLEEP_TIME);
+
+                    }
+                }
             }
         }
 
         private int[] handlePick()
         {
             int[] res = getUserPick();
-            while (!m_GameLogic.TryFlipCard(res[0], res[1]))
+            while ((res[0]!= -1 && res[1] != -1) && !m_GameLogic.TryFlipCard(res[0], res[1]))
             {
-                Console.WriteLine(@"Sorry, you picked a wrong card placement, please choose again");
+                Console.WriteLine(String.Format(@"Sorry, you picked a wrong card placement, please choose again"));
                 res = getUserPick();
             }
 
@@ -168,14 +175,16 @@ Just in case you forgot - so far you have {1} points", activePlayer.Name, active
                 isQuit = m_GameLogic.TryQuitGame(userInput);
             }
             userPicks[0] = isQuit ? -1 : rowIndex - 1;
-            
-            userInput = getInputFrommUser(new StringBuilder().AppendFormat("Type your column choice for the card between A and {0}:",(char)(m_GameLogic.GetGridCols() + 'A' - 1 )).ToString());
-            isQuit = m_GameLogic.TryQuitGame(userInput);
-
-            while (!isQuit && !char.TryParse(userInput.ToUpper(), out colIndexInAlphBet) || (int)(colIndexInAlphBet - 'A') > m_GameLogic.GetGridCols())
+            if (!isQuit)
             {
-                userInput = getInputFrommUser(new StringBuilder().AppendFormat("Invalid input, Please Type your column choice for the card between A and {0}: ", (char)(m_GameLogic.GetGridCols() + 65)).ToString());
+                userInput = getInputFrommUser(new StringBuilder().AppendFormat("Type your column choice for the card between A and {0}:", (char)(m_GameLogic.GetGridCols() + 'A' - 1)).ToString());
                 isQuit = m_GameLogic.TryQuitGame(userInput);
+
+                while (!isQuit && !char.TryParse(userInput.ToUpper(), out colIndexInAlphBet) || (int)(colIndexInAlphBet - 'A') > m_GameLogic.GetGridCols())
+                {
+                    userInput = getInputFrommUser(new StringBuilder().AppendFormat("Invalid input, Please Type your column choice for the card between A and {0}: ", (char)(m_GameLogic.GetGridCols() + 65)).ToString());
+                    isQuit = m_GameLogic.TryQuitGame(userInput);
+                }
             }
             userPicks[1] = isQuit ? -1 : (int)(colIndexInAlphBet - 'A');
 
@@ -201,17 +210,17 @@ Just in case you forgot - so far you have {1} points", activePlayer.Name, active
             printLnSeperator();
             for (int i = 0; i < m_GameLogic.GetGridRows(); i++)
             {
-                Console.Write(@"{0} |", i + 1);
+                Console.Write(String.Format(@"{0} |", i + 1));
                 for (int j = 0; j < m_GameLogic.GetGridCols(); j++)
                 {
                     if ((gameGrid[i, j].IsVisable == true) || (i_FirstCardIndexes != null && i_SecondCardIndexes != null) &&
                         (i == i_FirstCardIndexes[0] && j == i_FirstCardIndexes[1] || i == i_SecondCardIndexes[0] && j == i_SecondCardIndexes[1]))
                     {
-                        Console.Write(@" {0} |", gameGrid[i, j].Letter);
+                        Console.Write(String.Format(@" {0} |", gameGrid[i, j].Letter));
                     }
                     else
                     {
-                        Console.Write(@"   |");
+                        Console.Write(String.Format(@"   |"));
                     }
                 }
                 printLnSeperator();      
