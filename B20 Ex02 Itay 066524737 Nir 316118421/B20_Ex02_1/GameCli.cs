@@ -29,6 +29,9 @@ namespace B20_Ex02_1
 
         public void Start()
         {
+            //CR ::Guys dll
+            System.Console.Clear();
+            Console.WriteLine("Enjoy the match :)");
             playGame();
         }
         #endregion
@@ -66,9 +69,8 @@ namespace B20_Ex02_1
 
             while (m_GameLogic.IsGameOn())
             {
-                //Change To GetPlayerTurn and get a Player
+                printCurrentGrid();
                 currentPlayingPlayer = m_GameLogic.GetActivePlayer();
-
                 if (currentPlayingPlayer.IsHuman)
                 {
                     playHumanTurn(currentPlayingPlayer.Id);
@@ -77,8 +79,8 @@ namespace B20_Ex02_1
                 {
                     playComputerTurn();
                 }
-               //TODO:: get guys dll for cleaning screen
-                printCurrentGrid();
+                //CR:: get guys dll for cleaning screen
+                Console.Clear(); 
             }
             announceWinner();
         }
@@ -99,23 +101,41 @@ You won the game!", winner.Name);
         {
             int[] firstPick = new int[2];
             int[] secondPick = new int[2];
-            firstPick = getUserPick();
-            m_GameLogic.TryFlipCard(firstPick[0], firstPick[1]);
-            //While not true for trying flip card
-            //TODO:: print current grid for second
-            secondPick = getUserPick();
-            //TODO:: make sure the cordinates are not the same
+            Player activePlayer = m_GameLogic.GetActivePlayer();
+            Console.WriteLine(@"{0}, you are up again!
+Just in case you forgot - so far you have {1} points", activePlayer.Name, activePlayer.NumOfHits);
+            firstPick = handlePick();
+            printCurrentGrid();
+            secondPick = handlePick();
+            while (secondPick[0] == firstPick[0] && secondPick[1] == firstPick[1])
+            {
+                Console.WriteLine("You are not supposed to pick the same card twice! Please do it again!");
+                firstPick = handlePick();
+                printCurrentGrid();
+                secondPick = handlePick();
+            }
             bool isHit = m_GameLogic.TryUpdateForEquality(firstPick[0], firstPick[1], secondPick[0], secondPick[1]);
 
             if (!isHit)
             {
-                //TODO :: how do you want to show the cards for two seconds?
                 printCurrentGrid(firstPick, secondPick);
                 System.Threading.Thread.Sleep(SLEEP_TIME);
-                Console.Clear(); // need to use guys dll
+               
             }
         }
 
+        private int[] handlePick()
+        {
+            int[] res = getUserPick();
+            while (!m_GameLogic.TryFlipCard(res[0], res[1]))
+            {
+                Console.WriteLine(@"Sorry, you picked a wrong card placement, please choose again");
+                res = getUserPick();
+            }
+
+            return res;
+        }
+        
         private int[] getUserPick()
         {
             int rowIndex = 0;
@@ -123,44 +143,74 @@ You won the game!", winner.Name);
             string userInput;
             int[] userPicks = new int[2];
             bool isQuit = false;
-            do { Console.WriteLine("Type your row choice for the card between 1 and {0}: ", m_GameLogic.GetGridRows());
-                userInput = Console.ReadLine();
+
+            userInput = getInputFrommUser(new StringBuilder().AppendFormat("Type your row choice for the card between 1 and {0}:", m_GameLogic.GetGridRows()).ToString());
+            isQuit = m_GameLogic.TryQuitGame(userInput);
+
+            while ((!isQuit) && (!int.TryParse(userInput, out rowIndex) || rowIndex > m_GameLogic.GetGridRows()))
+            {
+                userInput = getInputFrommUser(new StringBuilder().AppendFormat("Invalid input, Please Type your row choice for the card between 1 and {0}: ", m_GameLogic.GetGridRows()).ToString());
                 isQuit = m_GameLogic.TryQuitGame(userInput);
             }
-            while((!isQuit) ||(!int.TryParse(userInput, out rowIndex) && rowIndex > m_GameLogic.GetGridRows()));
-            userPicks[0] = isQuit ? -1 : rowIndex;
+            userPicks[0] = isQuit ? -1 : rowIndex - 1;
+            
+            userInput = getInputFrommUser(new StringBuilder().AppendFormat("Type your column choice for the card between A and {0}:",(char)(m_GameLogic.GetGridCols() + 'A' - 1 )).ToString());
+            isQuit = m_GameLogic.TryQuitGame(userInput);
 
-            while(!isQuit && !char.TryParse(userInput, out colIndexInAlphBet) && (int)colIndexInAlphBet > m_GameLogic.GetGridCols())
+            while (!isQuit && !char.TryParse(userInput.ToUpper(), out colIndexInAlphBet) || (int)(colIndexInAlphBet - 'A') > m_GameLogic.GetGridCols())
             {
-                Console.WriteLine("Type your col choice for the card between A and {0}: ", (char)m_GameLogic.GetGridCols());
-                userInput = Console.ReadLine();
-                isQuit = m_GameLogic.TryQuitGame(userInput); 
+                userInput = getInputFrommUser(new StringBuilder().AppendFormat("Invalid input, Please Type your column choice for the card between A and {0}: ", (char)(m_GameLogic.GetGridCols() + 65)).ToString());
+                isQuit = m_GameLogic.TryQuitGame(userInput);
             }
-            userPicks[1] = isQuit ? -1 : (int)colIndexInAlphBet;
+            userPicks[1] = isQuit ? -1 : (int)(colIndexInAlphBet - 'A');
+
             return userPicks;
+
+        }
+
+        private string getInputFrommUser(string i_messageToShowUser)
+        {
+            Console.WriteLine(i_messageToShowUser);
+            string userInput = Console.ReadLine();
+            return userInput;
         }
 
         private void printCurrentGrid(int[] i_FirstCardIndexes = null, int[] i_SecondCardIndexes = null)
         {
             Cell[,] gameGrid = m_GameLogic.GameGrid;
-
-
+            Console.Write("   ");
+            for (int i =0; i< m_GameLogic.GetGridCols();i++)
+            {
+                Console.Write("{0}    ", (char)(i +'A'));
+            }
+            printLnSeperator();
             for (int i = 0; i < m_GameLogic.GetGridRows(); i++)
             {
+                Console.Write(@"{0} |", i + 1);
                 for (int j = 0; j < m_GameLogic.GetGridCols(); j++)
                 {
-                    if ((gameGrid[i, j].IsVisable == !true) || (i_FirstCardIndexes != null && i_SecondCardIndexes != null) &&
+                    if ((gameGrid[i, j].IsVisable == true) || (i_FirstCardIndexes != null && i_SecondCardIndexes != null) &&
                         (i == i_FirstCardIndexes[0] && j == i_FirstCardIndexes[1] || i == i_SecondCardIndexes[0] && j == i_SecondCardIndexes[1]))
                     {
-                        Console.Write(@"| {0} |", gameGrid[i ,j]);
+                        Console.Write(@" {0} |", gameGrid[i, j].Letter);
                     }
                     else
                     {
-                        Console.Write(@"|   |");
+                        Console.Write(@"   |");
                     }
                 }
-                Console.WriteLine();
+                printLnSeperator();      
             }
+        }
+
+        private void printLnSeperator()
+        {
+            Console.Write("\n   ");
+            for (int j = 0; j < m_GameLogic.GetGridCols(); j++)
+            {
+                Console.Write("====");
+            }
+            Console.WriteLine();
         }
 
         private void  playComputerTurn()
@@ -177,7 +227,7 @@ You won the game!", winner.Name);
             playerName = Console.ReadLine();
             do
             {
-                Console.WriteLine("Great!\nIn order to play againg the computer please type 0,to play against other player type 1");
+                Console.WriteLine("Great!\nIn order to play against another player - press 1 , in case you prefer to lay against comuter - press any other key");
                 inputString = Console.ReadLine();
                 int.TryParse(inputString, out userChoice);
             } while (userChoice != 0 && userChoice != 1);

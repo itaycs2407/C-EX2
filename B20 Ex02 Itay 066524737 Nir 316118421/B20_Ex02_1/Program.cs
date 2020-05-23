@@ -7,8 +7,10 @@ namespace B20_Ex02_1
         public static void Main(string[] args)
         {
             GameCli m_MemoryGame = new GameCli();
+            m_MemoryGame.InitializeGame();
             m_MemoryGame.Start();
             Console.WriteLine("Thank you for playing !");
+            Console.ReadKey();
         }
     }
 }
