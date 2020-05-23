@@ -11,7 +11,7 @@ namespace B20_Ex02_1
         {
             // do equlide distance between two most farest cells ->  sqrt((x2-x1)^2 + (y2-y1)^2)
             m_size = (int)Math.Sqrt(Math.Pow(5, 2) + Math.Pow(5, 2)) + 1 ;
-            Distances = new int[m_size];
+            m_Distances = new int[m_size];
         }
         public void UpdateDistance(int i_Distance)
         {
