@@ -37,7 +37,7 @@
   <ItemGroup>
     <Compile Include="AiEngine.cs" />
     <Compile Include="Cell.cs" />
-    <Compile Include="Cli.cs" />
+    <Compile Include="GameCli.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Logic.cs" />
     <Compile Include="Program.cs" />

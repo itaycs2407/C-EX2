@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace B20_Ex02_1
 {
-    public class Cli 
+    public class GameCli 
     {
 #region props
         private Logic m_GameLogic;
         private const int SLEEP_TIME = 2000;
         #endregion
 #region c'tor
-        public Cli()
+        public GameCli()
         {
             m_GameLogic = new Logic();
             

@@ -19,11 +19,6 @@ namespace B20_Ex02_1
         public Cell[,] GameGrid { get => m_GameGrid; set => m_GameGrid = value; }
         public int CurrentActivePlayerId { get => m_CurrentActivePlayerId; set => m_CurrentActivePlayerId = value; }
 
-        public Logic()
-        {
-        }
-
-
         // check how to define bool inside funcyion
         public bool TryCreateGrid(int i_Rows, int i_Cols)
 
@@ -57,20 +52,20 @@ namespace B20_Ex02_1
             return (i_Number >= i_Low) && (i_Number <= i_High);
         }
 
-        internal void AddNewPlayer(Player player) // WILL UPDATE
+        public void AddNewPlayer(Player i_Player) 
         {
-            throw new NotImplementedException();
+            if (m_Players.Count < 2)
+            {
+                m_Players.Add(i_Player);
+            }
+            
         }
-
-
-
 
         // todo logic return the active player
         public Player GetActivePlayer()
         {
             return m_Players.Find(ply => ply.Id == m_CurrentActivePlayerId);
         }
-
 
         private void updateActivePlayer()
         {
@@ -141,6 +136,13 @@ namespace B20_Ex02_1
             }
         }
 
+        public bool TryQuitGame(string i_UserInput)
+        {
+            string userInputAfterTrim = i_UserInput.Trim(' ').ToUpper();
+           
+            return userInputAfterTrim.Contains('Q');
+        }
+
         public void MakeComputerMove(ref int i_Row, ref int i_Col)
         {
             do
@@ -183,7 +185,6 @@ namespace B20_Ex02_1
             m_GameGrid[i_Row, i_Col].PlayerId = i_Ply.Id;
         }
 
-
         // get player match cells. check the cells equaility. if true - > update the cell with the player id
         
         public bool TryUpdateForEquality(int i_RowFirstCell, int i_ColFirstCell, int i_RowSecondCell, int i_ColSecondCell)
@@ -223,7 +224,6 @@ namespace B20_Ex02_1
             }
             return isValid;
         }
-
 
         private void addHit(Player i_Ply)
         {

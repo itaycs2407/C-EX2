@@ -6,7 +6,7 @@ namespace B20_Ex02_1
     {
         public static void Main(string[] args)
         {
-            Cli m_MemoryGame = new Cli();
+            GameCli m_MemoryGame = new GameCli();
             m_MemoryGame.Start();
             Console.WriteLine("Thank you for playing !");
         }
