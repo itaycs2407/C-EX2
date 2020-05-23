@@ -66,6 +66,7 @@ namespace B20_Ex02_1
 
             while (m_GameLogic.IsGameOn())
             {
+                //Change To GetPlayerTurn and get a Player
                 playerTurnId = m_GameLogic.GetPlayerIdTurn();
 
                 if (m_GameLogic.GetPlayer(playerTurnId).IsHuman)
@@ -84,11 +85,13 @@ namespace B20_Ex02_1
 
         private void announceWinner()
         {
+
+            //TODO:: add getloser
             Player winner = m_GameLogic.GetWinner();
             if (winner != null)
             {
                 Console.WriteLine(@"Congratulations {0}
-You won the game!", winner.GetName());
+You won the game!", winner.Name);
             }
         }
 
@@ -97,9 +100,12 @@ You won the game!", winner.GetName());
             int[] firstPick = new int[2];
             int[] secondPick = new int[2];
             firstPick = getUserPick();
-            m_GameLogic.UpdatePickVisibilit(firstPick[0], firstPick[1]);
+            m_GameLogic.TryFlipCard(firstPick[0], firstPick[1]);
+            //While not true for trying flip card
+            //TODO:: print current grid for second
             secondPick = getUserPick();
-            bool isHit = m_GameLogic.CheckIsHit(firstPick[0], firstPick[1], secondPick[0], secondPick[1]);
+            //TODO:: make sure the cordinates are not the same
+            bool isHit = m_GameLogic.TryUpdateForEquality(firstPick[0], firstPick[1], secondPick[0], secondPick[1]);
 
             if (!isHit)
             {
@@ -115,17 +121,23 @@ You won the game!", winner.GetName());
             int rowIndex = 0;
             char colIndexInAlphBet;
             string userInput;
-            do { Console.WriteLine("Type your row choice for the card between 1 and {0}: ", m_GameLogic.GetRowsLength());
+            int[] userPicks = new int[2];
+            bool isQuit = false;
+            do { Console.WriteLine("Type your row choice for the card between 1 and {0}: ", m_GameLogic.GetGridRows());
                 userInput = Console.ReadLine();
+                isQuit = m_GameLogic.TryQuitGame(userInput);
             }
-            while(!int.TryParse(userInput, out rowIndex) && rowIndex > m_GameLogic.GetRowsLength());
-            do
+            while((!TryQuitGame) ||(!int.TryParse(userInput, out rowIndex) && rowIndex > m_GameLogic.GetGridRows()));
+            userPicks[0] = isQuit ? -1 : rowIndex;
+
+            while(!isQuit && !char.TryParse(userInput, out colIndexInAlphBet) && (int)colIndexInAlphBet > m_GameLogic.GetColsLength())
             {
-                Console.WriteLine("Type your row choice for the card between 1 and {0}: ", m_GameLogic.GetColsLength());
+                Console.WriteLine("Type your col choice for the card between A and {0}: ", (char)m_GameLogic.GetColsLength());
                 userInput = Console.ReadLine();
+                isQuit = m_GameLogic.TryQuitGame(userInput); 
             }
-            while (!char.TryParse(userInput, out colIndexInAlphBet) && (int)colIndexInAlphBet > m_GameLogic.GetColsLength());
-            return new int[]{ rowIndex, (int)colIndexInAlphBet };
+            userPicks[1] = isQuit ? -1 : (int)colIndexInAlphBet;
+            return userPicks;
         }
 
         private void printCurrentGrid(int[] i_FirstCardIndexes = null, int[] i_SecondCardIndexes = null)
@@ -133,7 +145,7 @@ You won the game!", winner.GetName());
             Cell[,] gameGrid = m_GameLogic.m_Grid;
 
 
-            for (int i = 0; i < m_GameLogic.GetRowsLength(); i++)
+            for (int i = 0; i < m_GameLogic.GetGridRows(); i++)
             {
                 for (int j = 0; j < m_GameLogic.GetColsLength(); j++)
                 {
