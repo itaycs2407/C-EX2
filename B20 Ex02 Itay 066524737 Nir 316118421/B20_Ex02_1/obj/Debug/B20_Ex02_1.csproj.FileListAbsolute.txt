@@ -1,0 +1,7 @@
+C:\code\C#pro\C-EX2\B20 Ex02 Itay 066524737 Nir 316118421\B20_Ex02_1\obj\Debug\B20_Ex02_1.csprojResolveAssemblyReference.cache
+C:\code\C#pro\C-EX2\B20 Ex02 Itay 066524737 Nir 316118421\B20_Ex02_1\obj\Debug\B20_Ex02_1.csproj.CoreCompileInputs.cache
+C:\code\C#pro\C-EX2\B20 Ex02 Itay 066524737 Nir 316118421\B20_Ex02_1\bin\Debug\B20_Ex02_1.exe.config
+C:\code\C#pro\C-EX2\B20 Ex02 Itay 066524737 Nir 316118421\B20_Ex02_1\bin\Debug\B20_Ex02_1.exe
+C:\code\C#pro\C-EX2\B20 Ex02 Itay 066524737 Nir 316118421\B20_Ex02_1\bin\Debug\B20_Ex02_1.pdb
+C:\code\C#pro\C-EX2\B20 Ex02 Itay 066524737 Nir 316118421\B20_Ex02_1\obj\Debug\B20_Ex02_1.exe
+C:\code\C#pro\C-EX2\B20 Ex02 Itay 066524737 Nir 316118421\B20_Ex02_1\obj\Debug\B20_Ex02_1.pdb
