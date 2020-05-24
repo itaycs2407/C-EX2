@@ -31,6 +31,7 @@ namespace B20_Ex02_1
         public void Start()
         {
             //CR ::Guys dll
+            Ex02.ConsoleUtils.Screen.Clear();
             System.Console.Clear();
             Console.WriteLine("Enjoy the match :)");
             playGames();
@@ -96,7 +97,8 @@ namespace B20_Ex02_1
                     playComputerTurn();
                 }
                 //CR:: get guys dll for cleaning screen
-                Console.Clear(); 
+                //Console.Clear(); 
+                Ex02.ConsoleUtils.Screen.Clear();
             }
             announceWinner();
         }
