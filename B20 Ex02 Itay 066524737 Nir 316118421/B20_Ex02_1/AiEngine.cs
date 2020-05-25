@@ -116,6 +116,7 @@ namespace B20_Ex02_1
             m_size = (int)Math.Sqrt(Math.Pow(5, 2) + Math.Pow(5, 2)) + 1 ;
             m_Distances = new int[m_size];
         }
+
         public void UpdateDistance(int i_Distance)
         {
             if ((i_Distance > 0) && (i_Distance < m_size))
