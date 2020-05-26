@@ -11,15 +11,17 @@ namespace B20_Ex02_1
         private List<CardOnBoard> m_PreviuosChoices;
         private int m_PreviousChoicesListDepth;
         private Random m_Random;
-        public int[] Distances { get => m_Distances; }
-        public List<CardOnBoard> PreviuosChoices { get => m_PreviuosChoices; }
 
+        public int[] Distances { get => m_Distances; }
+
+        public List<CardOnBoard> PreviuosChoices { get => m_PreviuosChoices; }
 
         public class CardOnBoard
         {
             private int m_Row;
             private int m_Col;
             private Cell m_Cell;
+
             public CardOnBoard(int i_Row, int i_Col, Cell i_Cell)
             {
                 m_Cell = i_Cell;
@@ -28,7 +30,9 @@ namespace B20_Ex02_1
             }
 
             public Cell Cell { get => m_Cell; set => m_Cell = value; }
+
             public int Col { get => m_Col; set => m_Col = value; }
+
             public int Row { get => m_Row; set => m_Row = value; }
         }
 
@@ -55,6 +59,7 @@ namespace B20_Ex02_1
                     }
                 });
             }
+
             return pickIndexes;
         }
 
@@ -72,12 +77,13 @@ namespace B20_Ex02_1
                     pickIndexes[1] = matchingCard.Col;
                 }
             }
+
             return pickIndexes;
         }
         
         public void InsertPrevChoice(int i_Row, int i_Col, Cell i_Cell)
         {
-            if((m_PreviuosChoices.FindAll(card => card != null).Count) < m_PreviousChoicesListDepth)
+            if(m_PreviuosChoices.FindAll(card => card != null).Count < m_PreviousChoicesListDepth)
             {
                 m_PreviuosChoices.Add(new CardOnBoard(i_Row, i_Col, i_Cell));
             }
@@ -85,7 +91,6 @@ namespace B20_Ex02_1
             {
                 UpdateAt(0, i_Row, i_Col, i_Cell);
             }
-            
         }
 
         public void RemoveFromPrevChoices(int i_Row, int i_Col, Cell i_Cell)
@@ -105,15 +110,15 @@ namespace B20_Ex02_1
 
         private CardOnBoard tryFindPair(CardOnBoard prevChoice)
         {
-            return m_PreviuosChoices.Where(ch => ch.Cell.Letter == prevChoice.Cell.Letter).
-                Where(ch => ch.Col != prevChoice.Col && ch.Row != prevChoice.Row)
+            return m_PreviuosChoices.Where(ch => ch.Cell.Letter == prevChoice.Cell.Letter)
+                .Where(ch => ch.Col != prevChoice.Col && ch.Row != prevChoice.Row)
                 .FirstOrDefault(); 
         }
 
         public AiEngine()
         {
             // do equlide distance between two most farest cells ->  sqrt((x2-x1)^2 + (y2-y1)^2)
-            m_size = (int)Math.Sqrt(Math.Pow(5, 2) + Math.Pow(5, 2)) + 1 ;
+            m_size = (int)Math.Sqrt(Math.Pow(5, 2) + Math.Pow(5, 2)) + 1;
             m_Distances = new int[m_size];
         }
 
@@ -124,9 +129,10 @@ namespace B20_Ex02_1
                 Distances[i_Distance]++;
             }
         }
+
         public int CalculteDistanceForTwoCells(int i_RowFirstCell, int i_ColFirstCell, int i_RowSecondCell, int i_ColSecondCell)
         {
-            return (int)(Math.Sqrt(Math.Pow(i_RowFirstCell - i_RowSecondCell, 2) + Math.Pow(i_ColFirstCell - i_ColSecondCell, 2)));
+            return (int)Math.Sqrt(Math.Pow(i_RowFirstCell - i_RowSecondCell, 2) + Math.Pow(i_ColFirstCell - i_ColSecondCell, 2));
         }
     }
 }

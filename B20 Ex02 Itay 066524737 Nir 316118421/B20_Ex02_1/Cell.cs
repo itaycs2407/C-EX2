@@ -10,8 +10,7 @@ namespace B20_Ex02_1
     {
         private char m_Letter;
         private bool m_IsVisable;
-        private int m_PlayerId ; 
-
+        private int m_PlayerId; 
 
         public Cell(char i_CurrentLetter, bool i_IsVisible)
         {
@@ -20,9 +19,10 @@ namespace B20_Ex02_1
             m_PlayerId = -1;
         }
 
-
         public bool IsVisable { get => m_IsVisable; set => m_IsVisable = value; }
+
         public int PlayerId { get => m_PlayerId; set => m_PlayerId = value; }
+
         public char Letter { get => m_Letter; set => m_Letter = value; }
     }
 }
