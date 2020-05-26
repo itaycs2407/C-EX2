@@ -11,9 +11,10 @@ namespace B20_Ex02_1
         private List<CardOnBoard> m_PreviuosChoices;
         private int m_PreviousChoicesListDepth;
         private Random m_Random;
+        private double m_probalittyToGuess;
         public int[] Distances { get => m_Distances; }
         public List<CardOnBoard> PreviuosChoices { get => m_PreviuosChoices; }
-
+        public double ProbalittyToGuess { get => m_probalittyToGuess;}
 
         public class CardOnBoard
         {
@@ -32,8 +33,9 @@ namespace B20_Ex02_1
             public int Row { get => m_Row; set => m_Row = value; }
         }
 
-        public AiEngine(int i_ChoicesListDepth = 5)
+        public AiEngine(int i_ChoicesListDepth = 5, double i_ProbilittyOfRightGuess = 0.5)
         {
+            m_probalittyToGuess = i_ProbilittyOfRightGuess;
             m_PreviuosChoices = new List<CardOnBoard>(m_PreviousChoicesListDepth);
             m_Random = new Random();
         }
@@ -43,7 +45,7 @@ namespace B20_Ex02_1
             int[] pickIndexes = new int[2];
             pickIndexes[0] = m_Random.Next(i_RowsLimit);
             pickIndexes[1] = m_Random.Next(i_ColsLimit);
-            if (m_PreviuosChoices.Any())
+            if (m_PreviuosChoices.Any() && m_Random.NextDouble() > m_probalittyToGuess)
             {
                 m_PreviuosChoices.ForEach(prevChoice =>
                 {
@@ -63,7 +65,7 @@ namespace B20_Ex02_1
             int[] pickIndexes = new int[2];
             pickIndexes[0] = m_Random.Next(i_RowsLimit);
             pickIndexes[1] = m_Random.Next(i_ColsLimit);
-            if (m_PreviuosChoices.Any())
+            if (m_PreviuosChoices.Any() && m_Random.NextDouble() > m_probalittyToGuess)
             {
                 var matchingCard = tryFindPair(i_FirstPick);
                 if (matchingCard != null)
@@ -91,6 +93,11 @@ namespace B20_Ex02_1
         public void RemoveFromPrevChoices(int i_Row, int i_Col, Cell i_Cell)
         {
             m_PreviuosChoices.RemoveAll(card => card.Col == i_Row && card.Col == i_Col && card.Cell.Letter == i_Cell.Letter);
+        }
+
+        public void RemoveFromPrevChoices(Cell i_Cell)
+        {
+            m_PreviuosChoices.RemoveAll(card => card.Cell.Letter == i_Cell.Letter);
         }
 
         public void RemoveFromPrevChoices(int i_Index)
