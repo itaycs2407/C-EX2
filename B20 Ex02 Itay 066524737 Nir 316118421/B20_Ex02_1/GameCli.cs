@@ -132,8 +132,8 @@ namespace B20_Ex02_1
                         secondPick = handlePick();
                     }
 
-                    bool isHit = m_GameLogic.TryUpdateForEquality(firstPick[0], firstPick[1], secondPick[0], secondPick[1]);
-                    if (!isHit)
+                    bool v_IsHit = m_GameLogic.TryUpdateForEquality(firstPick[0], firstPick[1], secondPick[0], secondPick[1]);
+                    if (!v_IsHit)
                     {
                         printCurrentGrid(firstPick, secondPick);
                         System.Threading.Thread.Sleep(SLEEP_TIME);
@@ -160,31 +160,31 @@ namespace B20_Ex02_1
             char colIndexInAlphBet = ' ';
             string userInput;
             int[] userPicks = new int[2];
-            bool isQuit = false;
+            bool v_IsQuit = !true;
 
             userInput = getInputFrommUser(new StringBuilder().AppendFormat("Type your row choice for the card between 1 and {0}:", m_GameLogic.GetGridRows()).ToString());
-            isQuit = m_GameLogic.TryQuitGame(userInput);
+            v_IsQuit = m_GameLogic.TryQuitGame(userInput);
 
-            while ((!isQuit) && (!int.TryParse(userInput, out rowIndex) || rowIndex > m_GameLogic.GetGridRows()))
+            while ((!v_IsQuit) && (!int.TryParse(userInput, out rowIndex) || rowIndex > m_GameLogic.GetGridRows()))
             {
                 userInput = getInputFrommUser(new StringBuilder().AppendFormat("Invalid input, Please Type your row choice for the card between 1 and {0}: ", m_GameLogic.GetGridRows()).ToString());
-                isQuit = m_GameLogic.TryQuitGame(userInput);
+                v_IsQuit = m_GameLogic.TryQuitGame(userInput);
             }
 
-            userPicks[0] = isQuit ? -1 : rowIndex - 1;
-            if (!isQuit)
+            userPicks[0] = v_IsQuit ? -1 : rowIndex - 1;
+            if (!v_IsQuit)
             {
                 userInput = getInputFrommUser(new StringBuilder().AppendFormat("Type your column choice for the card between A and {0}:", (char)(m_GameLogic.GetGridCols() + 'A' - 1)).ToString());
-                isQuit = m_GameLogic.TryQuitGame(userInput);
+                v_IsQuit = m_GameLogic.TryQuitGame(userInput);
 
-                while ((!isQuit && !char.TryParse(userInput.ToUpper(), out colIndexInAlphBet)) || ((int)(colIndexInAlphBet - 'A') > m_GameLogic.GetGridCols()))
+                while ((!v_IsQuit && !char.TryParse(userInput.ToUpper(), out colIndexInAlphBet)) || ((int)(colIndexInAlphBet - 'A') > m_GameLogic.GetGridCols()))
                 {
                     userInput = getInputFrommUser(new StringBuilder().AppendFormat("Invalid input, Please Type your column choice for the card between A and {0}: ", (char)(m_GameLogic.GetGridCols() + 65)).ToString());
-                    isQuit = m_GameLogic.TryQuitGame(userInput);
+                    v_IsQuit = m_GameLogic.TryQuitGame(userInput);
                 }
             }
 
-            userPicks[1] = isQuit ? -1 : (int)(colIndexInAlphBet - 'A');
+            userPicks[1] = v_IsQuit ? -1 : (int)(colIndexInAlphBet - 'A');
 
             return userPicks;
         }

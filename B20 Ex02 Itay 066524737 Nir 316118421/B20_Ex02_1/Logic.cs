@@ -63,38 +63,36 @@ namespace B20_Ex02_1
             }
         }
 
-        // todo logic return the active player
         public Player GetActivePlayer()
         {
             return m_Players.Find(ply => ply.Id == m_CurrentActivePlayerId);
         }
 
-        // check how to define bool inside funcyion
         public bool TryCreateGrid(int i_Rows, int i_Cols)
         {
-            bool isValid = checkLimits(i_Rows, MINIMUM_LENGTH_FOR_GRID, MAXIMUM_LENGTH_FOR_GRID) && checkLimits(i_Cols, MINIMUM_LENGTH_FOR_GRID, MAXIMUM_LENGTH_FOR_GRID) && ((i_Rows * i_Cols) % 2 == 0);
-            if (isValid)
+            bool v_IsValid = checkLimits(i_Rows, MINIMUM_LENGTH_FOR_GRID, MAXIMUM_LENGTH_FOR_GRID) && checkLimits(i_Cols, MINIMUM_LENGTH_FOR_GRID, MAXIMUM_LENGTH_FOR_GRID) && ((i_Rows * i_Cols) % 2 == 0);
+            if (v_IsValid)
             {
                 GameGrid = new Cell[i_Rows, i_Cols];
                 ShuffleGrid();
             }
             
-            return isValid;
+            return v_IsValid;
         }
 
         public bool TryFlipCard(int i_Row, int i_Col)
         {
-            bool flipSuccess = !true;
+            bool v_FlipSuccess = !true;
             if (checkLimits(i_Row, 0, GetGridRows()) && checkLimits(i_Col, 0, GetGridCols()))
             {
                 if(m_GameGrid[i_Row, i_Col].IsVisable == !true)
                 {
                     setCellVisiballity(i_Row, i_Col, true);
-                    flipSuccess = true;
+                    v_FlipSuccess = true;
                 }
             }
 
-            return flipSuccess;
+            return v_FlipSuccess;
         }
 
         public void AddNewPlayer(Player i_Player)
@@ -149,18 +147,18 @@ namespace B20_Ex02_1
 
             // try to find educated match for five times, if dont find any match, will try in the regular way
             int counterForEductedGuessTry = 5;
-            bool educatedGuess = !true;
+            bool V_EducatedGuess = !true;
             do
             {
                 i_SecondCardRow = rnd.Next(0, GetGridRows());
                 i_SecondCardCol = rnd.Next(0, GetGridCols());
-                educatedGuess = TryFlipCard(i_SecondCardRow, i_SecondCardCol);
+                V_EducatedGuess = TryFlipCard(i_SecondCardRow, i_SecondCardCol);
                 counterForEductedGuessTry--;
             } 
-            while (counterForEductedGuessTry > 0 && !educatedGuess);
+            while (counterForEductedGuessTry > 0 && !V_EducatedGuess);
 
             //count <=0 : try to find educated gess for five times and hasnt succed. try now in the naive way
-            if (counterForEductedGuessTry <= 0 && !educatedGuess)
+            if (counterForEductedGuessTry <= 0 && !V_EducatedGuess)
             {
                 MakeComputerMove(ref i_SecondCardRow, ref i_SecondCardCol);
             }
@@ -195,22 +193,22 @@ namespace B20_Ex02_1
 
         public bool IsGameOn()
         {
-            bool foundInvisible = false;
+            bool v_FoundInvisible = !true;
             if (!IsGameOver)
             {
-                for (int i = 0; i < GetGridRows() && !foundInvisible; i++)
+                for (int i = 0; i < GetGridRows() && !v_FoundInvisible; i++)
                 {
-                    for (int j = 0; j < GetGridCols() && !foundInvisible; j++)
+                    for (int j = 0; j < GetGridCols() && !v_FoundInvisible; j++)
                     {
                         if (!m_GameGrid[i, j].IsVisable)
                         {
-                            foundInvisible = true;
+                            v_FoundInvisible = true;
                         }
                     }
                 }
             }
 
-            return foundInvisible;
+            return v_FoundInvisible;
             /*
             //int sumOfHits = 0;
             //int numberOfTotalCells = m_GameGrid.GetLength(0) * m_GameGrid.GetLength(1);
@@ -227,13 +225,13 @@ namespace B20_Ex02_1
         public bool TryUpdateForEquality(int i_RowFirstCell, int i_ColFirstCell, int i_RowSecondCell, int i_ColSecondCell)
         {
             // check if the cordinate are not eaqual
-            bool isValid = !((i_RowFirstCell == i_RowSecondCell) && (i_ColSecondCell == i_ColFirstCell));
+            bool v_IsValid = !((i_RowFirstCell == i_RowSecondCell) && (i_ColSecondCell == i_ColFirstCell));
 
             // check valid cordinate
-            isValid = isValid && (checkLimits(i_RowFirstCell, 0, GetGridRows()) && checkLimits(i_ColFirstCell, 0, GetGridCols() ))
+            v_IsValid = v_IsValid && (checkLimits(i_RowFirstCell, 0, GetGridRows()) && checkLimits(i_ColFirstCell, 0, GetGridCols() ))
                 && (checkLimits(i_RowSecondCell, 0, GetGridRows()) && checkLimits(i_ColSecondCell, 0, GetGridCols()));
 
-            if (isValid)
+            if (v_IsValid)
             {
                 if (m_GameGrid[i_RowFirstCell, i_ColFirstCell].Letter == m_GameGrid[i_RowSecondCell, i_ColSecondCell].Letter)
                 {
@@ -263,14 +261,14 @@ namespace B20_Ex02_1
                     setCellVisiballity(i_RowSecondCell, i_ColSecondCell, !true);
 
                     //CR :: maybe not the right param name but we still didnt update for equalit - therefore we shuold return false
-                    isValid = false;
+                    v_IsValid = !true;
 
                     // give the turn to another player
                     updateActivePlayer();
                 }
             }
 
-            return isValid;
+            return v_IsValid;
         }
 
         #endregion

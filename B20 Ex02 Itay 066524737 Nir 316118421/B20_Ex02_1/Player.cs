@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace B20_Ex02_1
-{ // check how to write bool var name acording to guys
+namespace B20_Ex02_1 { 
     public class Player 
     {
         private int m_Id;
