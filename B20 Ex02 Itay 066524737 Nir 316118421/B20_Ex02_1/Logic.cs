@@ -38,6 +38,7 @@ namespace B20_Ex02_1
         #region C'tors
         public Logic()
         {
+            m_AiEngine = new AiEngine();
             m_Players = new List<Player>();
             m_OptionalCardsLetters = new List<char>() { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'V' };
         }
@@ -160,7 +161,7 @@ namespace B20_Ex02_1
             //count <=0 : try to find educated gess for five times and hasnt succed. try now in the naive way
             if (counterForEductedGuessTry <= 0 && !V_EducatedGuess)
             {
-                MakeComputerMove(ref i_SecondCardRow, ref i_SecondCardCol);
+                MakeComputerMove();
             }
         }
 
@@ -171,14 +172,18 @@ namespace B20_Ex02_1
             return m_IsGameOver;
         }
 
-        public void MakeComputerMove(ref int i_Row, ref int i_Col)
+        public int[] MakeComputerMove()
         {
+            int[] firstPick, secondPick;
+
             do
             {
-                i_Row = rnd.Next(0, GetGridRows());
-                i_Col = rnd.Next(0, GetGridCols());
-            } 
-            while (!TryFlipCard(i_Row, i_Col));
+                firstPick = m_AiEngine.GetFirstPick(GetGridRows(), GetGridCols());
+                secondPick = m_AiEngine.GetSecondPick(GetGridRows(), GetGridCols(), new AiEngine.CardOnBoard(firstPick[0], firstPick[1], m_GameGrid[firstPick[0], firstPick[1]]));
+            } while (!TryFlipCard(firstPick[0], firstPick[1]) || !TryFlipCard(secondPick[0], secondPick[1]));
+
+            bool isHit = TryUpdateForEquality(firstPick[0], firstPick[1], secondPick[0], secondPick[1]);
+            return new int[]{ firstPick[0], firstPick[1], secondPick[0], secondPick[1]};
         }
 
         public int GetGridCols()
@@ -248,17 +253,19 @@ namespace B20_Ex02_1
                     // update player hits
                     addHit(currentPlayer);
 
-                    //CR :: ignoring AI - it has some bugs rn
-                    
-                    //update the distance for AI use
-                    //int currentDistanceForTwoCells = m_AiEngine.CalculteDistanceForTwoCells(i_RowFirstCell, i_ColFirstCell, i_RowSecondCell, i_ColSecondCell);
-                    //m_AiEngine.UpdateDistance(currentDistanceForTwoCells);
+                    m_AiEngine.RemoveFromPrevChoices(m_GameGrid[i_RowFirstCell, i_ColFirstCell]);
+                    m_AiEngine.RemoveFromPrevChoices(m_GameGrid[i_RowSecondCell, i_ColSecondCell]);
+
                 }
                 else
                 {
                     // update cells visabillity
                     setCellVisiballity(i_RowFirstCell, i_ColFirstCell, !true);
                     setCellVisiballity(i_RowSecondCell, i_ColSecondCell, !true);
+
+                    m_AiEngine.InsertPrevChoice(i_RowFirstCell, i_ColFirstCell, m_GameGrid[i_RowFirstCell, i_ColFirstCell]);
+                    m_AiEngine.InsertPrevChoice(i_RowSecondCell, i_ColSecondCell, m_GameGrid[i_RowSecondCell, i_ColSecondCell]);
+
 
                     //CR :: maybe not the right param name but we still didnt update for equalit - therefore we shuold return false
                     v_IsValid = !true;
@@ -288,7 +295,7 @@ namespace B20_Ex02_1
 
         private void setCellVisiballity(int i_Row, int i_Col, bool i_isVisible)
         {
-            if(checkLimits(i_Row, 0, GetGridRows() - 1) && checkLimits(i_Row, 0, GetGridCols() - 1))
+            if(checkLimits(i_Row, 0, GetGridRows()) && checkLimits(i_Row, 0, GetGridCols()))
             {
                 m_GameGrid[i_Row, i_Col].IsVisable = i_isVisible;
             }

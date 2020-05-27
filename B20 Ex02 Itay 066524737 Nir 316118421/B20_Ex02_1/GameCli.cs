@@ -240,7 +240,11 @@ namespace B20_Ex02_1
         //need to go out ?!?!?
         private void playComputerTurn()
         {
-            throw new NotImplementedException();
+            Console.WriteLine(@"So far the computer has {0}", m_GameLogic.GetActivePlayer().NumOfHits);
+            int[] cellsChosenIndexes = m_GameLogic.MakeComputerMove();
+            printCurrentGrid(new int[]{ cellsChosenIndexes[0], cellsChosenIndexes[1]}, new int[] { cellsChosenIndexes[2], cellsChosenIndexes[3] });
+            System.Threading.Thread.Sleep(10000);
+            System.Console.Clear();
         }
         
         private void initializePlayers()
@@ -250,16 +254,11 @@ namespace B20_Ex02_1
             int userChoice;
             Console.WriteLine("Please Type your name:");
             playerName = Console.ReadLine();
-            do
-            {
-                Console.WriteLine("Great!\nIn order to play against another player - press 1 , in case you prefer to lay against comuter - press any other key");
-                inputString = Console.ReadLine();
-                int.TryParse(inputString, out userChoice);
-            } 
-            while (userChoice != 0 && userChoice != 1);
-
             m_GameLogic.AddNewPlayer(new Player(0, playerName, true));
-            if (userChoice == 0)
+            Console.WriteLine("Great!\nIn order to play against another player - press 1 , in case you prefer to lay against comuter - press any other key");
+            inputString = Console.ReadLine();
+            int.TryParse(inputString, out userChoice);
+            if (userChoice != 1)
             {
                 m_GameLogic.AddNewPlayer(new Player(1, "Computer", !true));
             }
