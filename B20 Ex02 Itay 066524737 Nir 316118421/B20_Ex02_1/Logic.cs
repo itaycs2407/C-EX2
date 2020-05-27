@@ -6,9 +6,7 @@ namespace B20_Ex02_1
 {
     public class Logic
     {
-        #region props
-        // to be changed to 4!!!!!!!!!
-        private const int MINIMUM_LENGTH_FOR_GRID = 1;
+        private const int MINIMUM_LENGTH_FOR_GRID = 4;
         private const int MAXIMUM_LENGTH_FOR_GRID = 6;
         private const int SAME_CARDS_COUNT = 2;
         private Random rnd = new Random();
@@ -19,9 +17,6 @@ namespace B20_Ex02_1
 
         public bool IsGameOver { get => m_IsGameOver; set => m_IsGameOver = value; }
 
-        #endregion
-        
-        #region fields
         private List<Player> m_Players = null;
         private int m_CurrentActivePlayerId = 0;
         private bool m_IsGameOver = !true;
@@ -29,18 +24,13 @@ namespace B20_Ex02_1
         private Cell[,] m_GameGrid;
         private List<char> m_OptionalCardsLetters;
 
-        #endregion
-
-        #region C'tors
         public Logic()
         {
             m_AiEngine = new AiEngine();
             m_Players = new List<Player>();
             m_OptionalCardsLetters = new List<char>() { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'V' };
         }
-        #endregion
-        #region PublicMethods
-
+         
         public void ShuffleGrid()
         {
             int rowGeneratedIndex, colGeneratedIndex;
@@ -80,7 +70,7 @@ namespace B20_Ex02_1
         public bool TryFlipCard(int i_Row, int i_Col)
         {
             bool v_FlipSuccess = !true;
-            if (checkLimits(i_Row, 0, GetGridRows()) && checkLimits(i_Col, 0, GetGridCols()))
+            if (checkLimits(i_Row, 0, GetGridRows() - 1 ) && checkLimits(i_Col, 0, GetGridCols() - 1 ))
             {
                 if(m_GameGrid[i_Row, i_Col].IsVisable == !true)
                 {
@@ -88,13 +78,12 @@ namespace B20_Ex02_1
                     v_FlipSuccess = true;
                 }
             }
-
+             
             return v_FlipSuccess;
         }
 
         public void AddNewPlayer(Player i_Player)
         {
-            //CR :: added player to empry list
             if (m_Players == null)
             {
                 m_Players = new List<Player>();
@@ -125,40 +114,16 @@ namespace B20_Ex02_1
         public Player GetLoser()
         {
             int min = GetGridCols() * GetGridRows() / 2;
-            Player losingPlayer = null;
+            Player losingPlayer = null, winningPlayer = GetWinner();
             m_Players.ForEach(ply =>
             {
-                if (ply.NumOfHits < min)
+                if (ply.NumOfHits < min && ply != winningPlayer)
                 {
                     min = ply.NumOfHits;
                     losingPlayer = ply;
                 }
             });
             return losingPlayer;
-        }
-
-        public void MakeComputerAiMove(int i_FirstCardRow, int i_FirstCardCol, ref int i_SecondCardRow, ref int i_SecondCardCol)
-        {
-            //get the most popular distance
-            int mostPopularDistance = m_AiEngine.Distances.ToList().IndexOf(m_AiEngine.Distances.Max());
-
-            // try to find educated match for five times, if dont find any match, will try in the regular way
-            int counterForEductedGuessTry = 5;
-            bool V_EducatedGuess = !true;
-            do
-            {
-                i_SecondCardRow = rnd.Next(0, GetGridRows());
-                i_SecondCardCol = rnd.Next(0, GetGridCols());
-                V_EducatedGuess = TryFlipCard(i_SecondCardRow, i_SecondCardCol);
-                counterForEductedGuessTry--;
-            } 
-            while (counterForEductedGuessTry > 0 && !V_EducatedGuess);
-
-            //count <=0 : try to find educated gess for five times and hasnt succed. try now in the naive way
-            if (counterForEductedGuessTry <= 0 && !V_EducatedGuess)
-            {
-                MakeComputerMove();
-            }
         }
 
         public bool TryQuitGame(string i_UserInput)
@@ -175,11 +140,16 @@ namespace B20_Ex02_1
             do
             {
                 firstPick = m_AiEngine.GetPick(GetGridRows(), GetGridCols());
+            } 
+            while (!TryFlipCard(firstPick[0], firstPick[1]));
+            do
+            {
                 secondPick = m_AiEngine.GetPick(GetGridRows(), GetGridCols(), new AiEngine.CardOnBoard(firstPick[0], firstPick[1], m_GameGrid[firstPick[0], firstPick[1]]));
-            } while (!TryFlipCard(firstPick[0], firstPick[1]) || !TryFlipCard(secondPick[0], secondPick[1]));
+            }
+            while (!TryFlipCard(secondPick[0], secondPick[1]));
 
-            bool isHit = TryUpdateForEquality(firstPick[0], firstPick[1], secondPick[0], secondPick[1]);
-            return new int[]{ firstPick[0], firstPick[1], secondPick[0], secondPick[1]};
+            bool v_IsHit = TryUpdateForEquality(firstPick[0], firstPick[1], secondPick[0], secondPick[1]);
+            return new int[] { firstPick[0], firstPick[1], secondPick[0], secondPick[1] };
         }
 
         public int GetGridCols()
@@ -210,16 +180,6 @@ namespace B20_Ex02_1
             }
 
             return v_FoundInvisible;
-            /*
-            //int sumOfHits = 0;
-            //int numberOfTotalCells = m_GameGrid.GetLength(0) * m_GameGrid.GetLength(1);
-            //foreach (Player ply in m_Players)
-            //{
-            //    sumOfHits += ply.NumOfHits;
-            //}
-
-            //return !((sumOfHits * 2) == numberOfTotalCells);
-            */
         }
 
         // get player match cells. check the cells equaility. if true - > update the cell with the player id
@@ -236,47 +196,49 @@ namespace B20_Ex02_1
             {
                 if (m_GameGrid[i_RowFirstCell, i_ColFirstCell].Letter == m_GameGrid[i_RowSecondCell, i_ColSecondCell].Letter)
                 {
-                    Player currentPlayer = GetActivePlayer();
-
-                    // update cells match (which player discover this couple)
-                    updatePlayerCellFinder(currentPlayer, i_RowFirstCell, i_ColFirstCell);
-                    updatePlayerCellFinder(currentPlayer, i_RowSecondCell, i_ColSecondCell);
-
-                    // update cells visabillity
-                    setCellVisiballity(i_RowFirstCell, i_ColFirstCell, true);
-                    setCellVisiballity(i_RowSecondCell, i_ColSecondCell, true);
-                    
-                    // update player hits
-                    addHit(currentPlayer);
-
-                    m_AiEngine.RemoveFromPrevChoices(m_GameGrid[i_RowFirstCell, i_ColFirstCell]);
-                    m_AiEngine.RemoveFromPrevChoices(m_GameGrid[i_RowSecondCell, i_ColSecondCell]);
-
+                    updateOnEqual(i_RowFirstCell, i_ColFirstCell, i_RowSecondCell, i_ColSecondCell);
                 }
                 else
                 {
-                    // update cells visabillity
-                    setCellVisiballity(i_RowFirstCell, i_ColFirstCell, !true);
-                    setCellVisiballity(i_RowSecondCell, i_ColSecondCell, !true);
-
-                    m_AiEngine.InsertPrevChoice(i_RowFirstCell, i_ColFirstCell, m_GameGrid[i_RowFirstCell, i_ColFirstCell]);
-                    m_AiEngine.InsertPrevChoice(i_RowSecondCell, i_ColSecondCell, m_GameGrid[i_RowSecondCell, i_ColSecondCell]);
-
-
-                    //CR :: maybe not the right param name but we still didnt update for equalit - therefore we shuold return false
+                    updateOnNotEqual(i_RowFirstCell, i_ColFirstCell, i_RowSecondCell, i_ColSecondCell);
                     v_IsValid = !true;
-
-                    // give the turn to another player
-                    updateActivePlayer();
                 }
             }
 
             return v_IsValid;
         }
 
-        #endregion
+        private void updateOnEqual(int i_RowFirstCell, int i_ColFirstCell, int i_RowSecondCell, int i_ColSecondCell) 
+        {
+            Player currentPlayer = GetActivePlayer();
 
-        #region PrivateMethods
+            // update cells match (which player discover this couple)
+            updatePlayerCellFinder(currentPlayer, i_RowFirstCell, i_ColFirstCell);
+            updatePlayerCellFinder(currentPlayer, i_RowSecondCell, i_ColSecondCell);
+
+            // update cells visabillity
+            setCellVisiballity(i_RowFirstCell, i_ColFirstCell, true);
+            setCellVisiballity(i_RowSecondCell, i_ColSecondCell, true);
+
+            // update player hits
+            addHit(currentPlayer);
+
+            m_AiEngine.RemoveFromPrevChoices(m_GameGrid[i_RowFirstCell, i_ColFirstCell]);
+            m_AiEngine.RemoveFromPrevChoices(m_GameGrid[i_RowSecondCell, i_ColSecondCell]);
+        }
+
+        private void updateOnNotEqual(int i_RowFirstCell, int i_ColFirstCell, int i_RowSecondCell, int i_ColSecondCell)
+        {
+            // update cells visabillity
+            setCellVisiballity(i_RowFirstCell, i_ColFirstCell, !true);
+            setCellVisiballity(i_RowSecondCell, i_ColSecondCell, !true);
+
+            m_AiEngine.InsertPrevChoice(i_RowFirstCell, i_ColFirstCell, m_GameGrid[i_RowFirstCell, i_ColFirstCell]);
+            m_AiEngine.InsertPrevChoice(i_RowSecondCell, i_ColSecondCell, m_GameGrid[i_RowSecondCell, i_ColSecondCell]);
+
+            // give the turn to another player
+            updateActivePlayer();
+        }
 
         private bool checkLimits(int i_Number, int i_Low, int i_High)
         {
@@ -307,7 +269,5 @@ namespace B20_Ex02_1
         {
             m_Players.FirstOrDefault(ply => ply.Id == i_Ply.Id).NumOfHits++;
         }
-
-        #endregion
     }
 }

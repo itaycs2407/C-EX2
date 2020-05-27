@@ -416,11 +416,34 @@
       </violation>
     </violations>
   </sourcecode>
+  <sourcecode name="Cell.cs" parser="StyleCop.CSharp.CsParser">
+    <timestamps>
+      <styleCop>2020/04/13 15:38:31.955</styleCop>
+      <settingsFile>2020/05/23 23:25:42.664</settingsFile>
+      <sourceFile>2020/05/27 17:44:37.100</sourceFile>
+      <parser>2020/04/13 15:38:31.955</parser>
+      <StyleCop.CSharp.DocumentationRules>2020/04/13 15:38:31.955</StyleCop.CSharp.DocumentationRules>
+      <StyleCop.CSharp.DocumentationRules.FilesHashCode>1240152945</StyleCop.CSharp.DocumentationRules.FilesHashCode>
+      <StyleCop.CSharp.LayoutRules>2020/04/13 15:38:31.955</StyleCop.CSharp.LayoutRules>
+      <StyleCop.CSharp.LayoutRules.FilesHashCode>0</StyleCop.CSharp.LayoutRules.FilesHashCode>
+      <StyleCop.CSharp.MaintainabilityRules>2020/04/13 15:38:31.955</StyleCop.CSharp.MaintainabilityRules>
+      <StyleCop.CSharp.MaintainabilityRules.FilesHashCode>0</StyleCop.CSharp.MaintainabilityRules.FilesHashCode>
+      <StyleCop.CSharp.NamingRules>2020/04/13 15:38:31.955</StyleCop.CSharp.NamingRules>
+      <StyleCop.CSharp.NamingRules.FilesHashCode>0</StyleCop.CSharp.NamingRules.FilesHashCode>
+      <StyleCop.CSharp.OrderingRules>2020/04/13 15:38:31.955</StyleCop.CSharp.OrderingRules>
+      <StyleCop.CSharp.OrderingRules.FilesHashCode>0</StyleCop.CSharp.OrderingRules.FilesHashCode>
+      <StyleCop.CSharp.ReadabilityRules>2020/04/13 15:38:31.955</StyleCop.CSharp.ReadabilityRules>
+      <StyleCop.CSharp.ReadabilityRules.FilesHashCode>0</StyleCop.CSharp.ReadabilityRules.FilesHashCode>
+      <StyleCop.CSharp.SpacingRules>2020/04/13 15:38:31.955</StyleCop.CSharp.SpacingRules>
+      <StyleCop.CSharp.SpacingRules.FilesHashCode>0</StyleCop.CSharp.SpacingRules.FilesHashCode>
+    </timestamps>
+    <violations />
+  </sourcecode>
   <sourcecode name="Program.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2020/04/13 15:38:31.955</styleCop>
       <settingsFile>2020/05/23 23:25:42.664</settingsFile>
-      <sourceFile>2020/05/23 23:27:34.043</sourceFile>
+      <sourceFile>2020/05/27 17:44:37.104</sourceFile>
       <parser>2020/04/13 15:38:31.955</parser>
       <StyleCop.CSharp.DocumentationRules>2020/04/13 15:38:31.955</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>1240152945</StyleCop.CSharp.DocumentationRules.FilesHashCode>
@@ -443,30 +466,7 @@
     <timestamps>
       <styleCop>2020/04/13 15:38:31.955</styleCop>
       <settingsFile>2020/05/23 23:25:42.664</settingsFile>
-      <sourceFile>2020/05/26 19:05:51.548</sourceFile>
-      <parser>2020/04/13 15:38:31.955</parser>
-      <StyleCop.CSharp.DocumentationRules>2020/04/13 15:38:31.955</StyleCop.CSharp.DocumentationRules>
-      <StyleCop.CSharp.DocumentationRules.FilesHashCode>1240152945</StyleCop.CSharp.DocumentationRules.FilesHashCode>
-      <StyleCop.CSharp.LayoutRules>2020/04/13 15:38:31.955</StyleCop.CSharp.LayoutRules>
-      <StyleCop.CSharp.LayoutRules.FilesHashCode>0</StyleCop.CSharp.LayoutRules.FilesHashCode>
-      <StyleCop.CSharp.MaintainabilityRules>2020/04/13 15:38:31.955</StyleCop.CSharp.MaintainabilityRules>
-      <StyleCop.CSharp.MaintainabilityRules.FilesHashCode>0</StyleCop.CSharp.MaintainabilityRules.FilesHashCode>
-      <StyleCop.CSharp.NamingRules>2020/04/13 15:38:31.955</StyleCop.CSharp.NamingRules>
-      <StyleCop.CSharp.NamingRules.FilesHashCode>0</StyleCop.CSharp.NamingRules.FilesHashCode>
-      <StyleCop.CSharp.OrderingRules>2020/04/13 15:38:31.955</StyleCop.CSharp.OrderingRules>
-      <StyleCop.CSharp.OrderingRules.FilesHashCode>0</StyleCop.CSharp.OrderingRules.FilesHashCode>
-      <StyleCop.CSharp.ReadabilityRules>2020/04/13 15:38:31.955</StyleCop.CSharp.ReadabilityRules>
-      <StyleCop.CSharp.ReadabilityRules.FilesHashCode>0</StyleCop.CSharp.ReadabilityRules.FilesHashCode>
-      <StyleCop.CSharp.SpacingRules>2020/04/13 15:38:31.955</StyleCop.CSharp.SpacingRules>
-      <StyleCop.CSharp.SpacingRules.FilesHashCode>0</StyleCop.CSharp.SpacingRules.FilesHashCode>
-    </timestamps>
-    <violations />
-  </sourcecode>
-  <sourcecode name="Cell.cs" parser="StyleCop.CSharp.CsParser">
-    <timestamps>
-      <styleCop>2020/04/13 15:38:31.955</styleCop>
-      <settingsFile>2020/05/23 23:25:42.664</settingsFile>
-      <sourceFile>2020/05/26 19:07:24.389</sourceFile>
+      <sourceFile>2020/05/27 20:16:17.597</sourceFile>
       <parser>2020/04/13 15:38:31.955</parser>
       <StyleCop.CSharp.DocumentationRules>2020/04/13 15:38:31.955</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>1240152945</StyleCop.CSharp.DocumentationRules.FilesHashCode>
@@ -489,7 +489,7 @@
     <timestamps>
       <styleCop>2020/04/13 15:38:31.955</styleCop>
       <settingsFile>2020/05/23 23:25:42.664</settingsFile>
-      <sourceFile>2020/05/26 19:14:31.236</sourceFile>
+      <sourceFile>2020/05/27 20:21:19.972</sourceFile>
       <parser>2020/04/13 15:38:31.955</parser>
       <StyleCop.CSharp.DocumentationRules>2020/04/13 15:38:31.955</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>1240152945</StyleCop.CSharp.DocumentationRules.FilesHashCode>
@@ -512,7 +512,7 @@
     <timestamps>
       <styleCop>2020/04/13 15:38:31.955</styleCop>
       <settingsFile>2020/05/23 23:25:42.664</settingsFile>
-      <sourceFile>2020/05/26 19:17:52.931</sourceFile>
+      <sourceFile>2020/05/27 20:26:40.245</sourceFile>
       <parser>2020/04/13 15:38:31.955</parser>
       <StyleCop.CSharp.DocumentationRules>2020/04/13 15:38:31.955</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>1240152945</StyleCop.CSharp.DocumentationRules.FilesHashCode>
@@ -529,51 +529,7 @@
       <StyleCop.CSharp.SpacingRules>2020/04/13 15:38:31.955</StyleCop.CSharp.SpacingRules>
       <StyleCop.CSharp.SpacingRules.FilesHashCode>0</StyleCop.CSharp.SpacingRules.FilesHashCode>
     </timestamps>
-    <violations>
-      <violation namespace="StyleCop.CSharp.SpacingRules" rule="SingleLineCommentsMustBeginWithSingleSpace" ruleCheckId="SA1005">
-        <context>The comment must start with a single space. To ignore this error when commenting out a line of code, begin the comment with '////' rather than '//'.</context>
-        <line>240</line>
-        <index>8942</index>
-        <endIndex>8963</endIndex>
-        <startLine>240</startLine>
-        <startColumn>9</startColumn>
-        <endLine>240</endLine>
-        <endColumn>30</endColumn>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.SpacingRules" rule="SingleLineCommentsMustBeginWithSingleSpace" ruleCheckId="SA1005">
-        <context>The comment must start with a single space. To ignore this error when commenting out a line of code, begin the comment with '////' rather than '//'.</context>
-        <line>33</line>
-        <index>690</index>
-        <endIndex>704</endIndex>
-        <startLine>33</startLine>
-        <startColumn>13</startColumn>
-        <endLine>33</endLine>
-        <endColumn>27</endColumn>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.SpacingRules" rule="SingleLineCommentsMustBeginWithSingleSpace" ruleCheckId="SA1005">
-        <context>The comment must start with a single space. To ignore this error when commenting out a line of code, begin the comment with '////' rather than '//'.</context>
-        <line>106</line>
-        <index>3199</index>
-        <endIndex>3219</endIndex>
-        <startLine>106</startLine>
-        <startColumn>13</startColumn>
-        <endLine>106</endLine>
-        <endColumn>33</endColumn>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.MaintainabilityRules" rule="ConditionalExpressionsMustDeclarePrecedence" ruleCheckId="SA1408">
-        <context>Insert parentheses within the conditional AND and OR expressions to declare the operator precedence.</context>
-        <line>214</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.MaintainabilityRules" rule="ConditionalExpressionsMustDeclarePrecedence" ruleCheckId="SA1408">
-        <context>Insert parentheses within the conditional AND and OR expressions to declare the operator precedence.</context>
-        <line>215</line>
-        <warning>False</warning>
-      </violation>
-    </violations>
+    <violations />
   </sourcecode>
   <project key="453303533">
     <configuration>DEBUG;TRACE</configuration>
@@ -582,7 +538,7 @@
     <timestamps>
       <styleCop>2020/04/13 15:38:31.955</styleCop>
       <settingsFile>2020/05/23 23:25:42.664</settingsFile>
-      <sourceFile>2020/05/26 19:18:38.219</sourceFile>
+      <sourceFile>2020/05/27 20:51:44.357</sourceFile>
       <parser>2020/04/13 15:38:31.955</parser>
       <StyleCop.CSharp.DocumentationRules>2020/04/13 15:38:31.955</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>1240152945</StyleCop.CSharp.DocumentationRules.FilesHashCode>
@@ -599,95 +555,6 @@
       <StyleCop.CSharp.SpacingRules>2020/04/13 15:38:31.955</StyleCop.CSharp.SpacingRules>
       <StyleCop.CSharp.SpacingRules.FilesHashCode>0</StyleCop.CSharp.SpacingRules.FilesHashCode>
     </timestamps>
-    <violations>
-      <violation namespace="StyleCop.CSharp.SpacingRules" rule="SingleLineCommentsMustBeginWithSingleSpace" ruleCheckId="SA1005">
-        <context>The comment must start with a single space. To ignore this error when commenting out a line of code, begin the comment with '////' rather than '//'.</context>
-        <line>102</line>
-        <index>3535</index>
-        <endIndex>3568</endIndex>
-        <startLine>102</startLine>
-        <startColumn>13</startColumn>
-        <endLine>102</endLine>
-        <endColumn>46</endColumn>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.SpacingRules" rule="SingleLineCommentsMustBeginWithSingleSpace" ruleCheckId="SA1005">
-        <context>The comment must start with a single space. To ignore this error when commenting out a line of code, begin the comment with '////' rather than '//'.</context>
-        <line>147</line>
-        <index>4831</index>
-        <endIndex>4861</endIndex>
-        <startLine>147</startLine>
-        <startColumn>13</startColumn>
-        <endLine>147</endLine>
-        <endColumn>43</endColumn>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.SpacingRules" rule="SingleLineCommentsMustBeginWithSingleSpace" ruleCheckId="SA1005">
-        <context>The comment must start with a single space. To ignore this error when commenting out a line of code, begin the comment with '////' rather than '//'.</context>
-        <line>162</line>
-        <index>5555</index>
-        <endIndex>5651</endIndex>
-        <startLine>162</startLine>
-        <startColumn>13</startColumn>
-        <endLine>162</endLine>
-        <endColumn>109</endColumn>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.SpacingRules" rule="SingleLineCommentsMustBeginWithSingleSpace" ruleCheckId="SA1005">
-        <context>The comment must start with a single space. To ignore this error when commenting out a line of code, begin the comment with '////' rather than '//'.</context>
-        <line>253</line>
-        <index>9100</index>
-        <endIndex>9140</endIndex>
-        <startLine>253</startLine>
-        <startColumn>21</startColumn>
-        <endLine>253</endLine>
-        <endColumn>61</endColumn>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.SpacingRules" rule="SingleLineCommentsMustBeginWithSingleSpace" ruleCheckId="SA1005">
-        <context>The comment must start with a single space. To ignore this error when commenting out a line of code, begin the comment with '////' rather than '//'.</context>
-        <line>255</line>
-        <index>9185</index>
-        <endIndex>9216</endIndex>
-        <startLine>255</startLine>
-        <startColumn>21</startColumn>
-        <endLine>255</endLine>
-        <endColumn>52</endColumn>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.SpacingRules" rule="SingleLineCommentsMustBeginWithSingleSpace" ruleCheckId="SA1005">
-        <context>The comment must start with a single space. To ignore this error when commenting out a line of code, begin the comment with '////' rather than '//'.</context>
-        <line>256</line>
-        <index>9239</index>
-        <endIndex>9378</endIndex>
-        <startLine>256</startLine>
-        <startColumn>21</startColumn>
-        <endLine>256</endLine>
-        <endColumn>160</endColumn>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.SpacingRules" rule="SingleLineCommentsMustBeginWithSingleSpace" ruleCheckId="SA1005">
-        <context>The comment must start with a single space. To ignore this error when commenting out a line of code, begin the comment with '////' rather than '//'.</context>
-        <line>257</line>
-        <index>9401</index>
-        <endIndex>9456</endIndex>
-        <startLine>257</startLine>
-        <startColumn>21</startColumn>
-        <endLine>257</endLine>
-        <endColumn>76</endColumn>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.SpacingRules" rule="SingleLineCommentsMustBeginWithSingleSpace" ruleCheckId="SA1005">
-        <context>The comment must start with a single space. To ignore this error when commenting out a line of code, begin the comment with '////' rather than '//'.</context>
-        <line>265</line>
-        <index>9752</index>
-        <endIndex>9862</endIndex>
-        <startLine>265</startLine>
-        <startColumn>21</startColumn>
-        <endLine>265</endLine>
-        <endColumn>131</endColumn>
-        <warning>False</warning>
-      </violation>
-    </violations>
+    <violations />
   </sourcecode>
 </stylecopresultscache>

@@ -5,18 +5,14 @@ namespace B20_Ex02_1
 {
     public class GameCli 
     {
-#region props
         private const int SLEEP_TIME = 2000;
         private Logic m_GameLogic;
-        #endregion
-#region c'tor
+         
         public GameCli()
         {
             m_GameLogic = new Logic();
         }
-
-        #endregion
-#region Public Methods
+         
         public void InitializeGame()
         {
             m_GameLogic = new Logic();
@@ -26,14 +22,11 @@ namespace B20_Ex02_1
 
         public void Start()
         {
-            //CR ::Guys dll
             Ex02.ConsoleUtils.Screen.Clear();
-            System.Console.Clear();
             Console.WriteLine("Enjoy the match :)");
             playGames();
         }
-        #endregion
-#region Private Methods
+         
         private void initializeGrid()
         {
             int rowsCount = 0, colsCount = 0;
@@ -80,6 +73,7 @@ namespace B20_Ex02_1
             Player currentPlayingPlayer;
             while (m_GameLogic.IsGameOn())
             {
+                Console.WriteLine("Current state of the grid :");
                 printCurrentGrid();
                 currentPlayingPlayer = m_GameLogic.GetActivePlayer();
                 if (currentPlayingPlayer.IsHuman)
@@ -99,11 +93,12 @@ namespace B20_Ex02_1
 
         private void announceWinner()
         {
-            //TODO:: add getloser
             Player winner = m_GameLogic.GetWinner();
-            if (winner != null)
+            Player loser = m_GameLogic.GetLoser();
+            if (winner != null && loser != null)
             {
-                Console.WriteLine(string.Format(@"Congratulations {0} You won the game!", winner.Name));
+                Console.WriteLine(string.Format(@"Congratulations, {0} You won the game with {1} points !", winner.Name, winner.NumOfHits));
+                Console.WriteLine(string.Format(@"Nothing to worry,  {0} you can play another match. (By the way, you had {1} points !)", loser.Name, loser.NumOfHits));
             }
         }
 
@@ -112,7 +107,7 @@ namespace B20_Ex02_1
             int[] firstPick = new int[2];
             int[] secondPick = new int[2];
             Player activePlayer = m_GameLogic.GetActivePlayer();
-            Console.WriteLine(string.Format(string.Format(@"{0}, you are up again! Just in case you forgot - so far you have {1} points", activePlayer.Name, activePlayer.NumOfHits)));
+            Console.WriteLine(string.Format(string.Format(@"{0}, its your turn! Just in case you forgot - your score is : {1}", activePlayer.Name, activePlayer.NumOfHits)));
             firstPick = handlePick();
             if (!m_GameLogic.IsGameOver)
             {
@@ -157,7 +152,7 @@ namespace B20_Ex02_1
             string userInput;
             int[] userPicks = new int[2];
             bool v_IsQuit = !true;
-
+            Console.WriteLine("You can press Q if you want to quit");
             userInput = getInputFrommUser(new StringBuilder().AppendFormat("Type your row choice for the card between 1 and {0}:", m_GameLogic.GetGridRows()).ToString());
             v_IsQuit = m_GameLogic.TryQuitGame(userInput);
 
@@ -175,7 +170,7 @@ namespace B20_Ex02_1
 
                 while ((!v_IsQuit && !char.TryParse(userInput.ToUpper(), out colIndexInAlphBet)) || ((int)(colIndexInAlphBet - 'A') > m_GameLogic.GetGridCols()))
                 {
-                    userInput = getInputFrommUser(new StringBuilder().AppendFormat("Invalid input, Please Type your column choice for the card between A and {0}: ", (char)(m_GameLogic.GetGridCols() + 65)).ToString());
+                    userInput = getInputFrommUser(new StringBuilder().AppendFormat("Invalid input, Please Type your column choice for the card between A and {0}: ", (char)(m_GameLogic.GetGridCols() + 'A' - 1)).ToString());
                     v_IsQuit = m_GameLogic.TryQuitGame(userInput);
                 }
             }
@@ -198,7 +193,7 @@ namespace B20_Ex02_1
             Console.Write("   ");
             for (int i = 0; i < m_GameLogic.GetGridCols(); i++)
             {
-                Console.Write("{0}    ", (char)(i + 'A'));
+                Console.Write(" {0}  ", (char)(i + 'A'));
             }
 
             printLnSeperator();
@@ -207,8 +202,7 @@ namespace B20_Ex02_1
                 Console.Write(string.Format(@"{0} |", i + 1));
                 for (int j = 0; j < m_GameLogic.GetGridCols(); j++)
                 {
-                    if ((gameGrid[i, j].IsVisable == true) || (i_FirstCardIndexes != null && i_SecondCardIndexes != null) &&
-                        ((i == i_FirstCardIndexes[0]) && (j == i_FirstCardIndexes[1]) || (i == i_SecondCardIndexes[0]) && (j == i_SecondCardIndexes[1])))
+                    if ((gameGrid[i, j].IsVisable == true) || ((i_FirstCardIndexes != null && i_SecondCardIndexes != null) && (((i == i_FirstCardIndexes[0]) && (j == i_FirstCardIndexes[1])) || ((i == i_SecondCardIndexes[0]) && (j == i_SecondCardIndexes[1]))) ))
                     {
                         Console.Write(string.Format(@" {0} |", gameGrid[i, j].Letter));
                     }
@@ -224,7 +218,7 @@ namespace B20_Ex02_1
 
         private void printLnSeperator()
         {
-            Console.Write("\n   ");
+            Console.Write("\n  =");
             for (int j = 0; j < m_GameLogic.GetGridCols(); j++)
             {
                 Console.Write("====");
@@ -233,16 +227,15 @@ namespace B20_Ex02_1
             Console.WriteLine();
         }
 
-        //need to go out ?!?!?
         private void playComputerTurn()
         {
-            Console.WriteLine(@"So far the computer has {0}", m_GameLogic.GetActivePlayer().NumOfHits);
+            Console.WriteLine(@"So far the computer's score is : {0} ", m_GameLogic.GetActivePlayer().NumOfHits);
             int[] cellsChosenIndexes = m_GameLogic.MakeComputerMove();
-            printCurrentGrid(new int[]{ cellsChosenIndexes[0], cellsChosenIndexes[1]}, new int[] { cellsChosenIndexes[2], cellsChosenIndexes[3] });
-            System.Threading.Thread.Sleep(10000);
-            System.Console.Clear();
+            printCurrentGrid(new int[] { cellsChosenIndexes[0], cellsChosenIndexes[1] }, new int[] { cellsChosenIndexes[2], cellsChosenIndexes[3] });
+            System.Threading.Thread.Sleep(SLEEP_TIME);
+            Ex02.ConsoleUtils.Screen.Clear();
         }
-        
+
         private void initializePlayers()
         {
             string inputString;
@@ -265,6 +258,5 @@ namespace B20_Ex02_1
                 m_GameLogic.AddNewPlayer(new Player(1, playerName, true));
             }
         }
-#endregion
     }
 }

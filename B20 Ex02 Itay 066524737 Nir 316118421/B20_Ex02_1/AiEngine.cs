@@ -6,16 +6,12 @@ namespace B20_Ex02_1
 {
     public partial class AiEngine
     {
-        private int[] m_Distances;
-        private int m_size;
+        private static int m_ListUpdateIndex = 0;
         private List<CardOnBoard> m_PreviuosChoices;
         private int m_PreviousChoicesListDepth;
         private Random m_Random;
-        private static int m_ListUpdateIndex = 0;
         private double m_UseListProbality;
-
-        public int[] Distances { get => m_Distances; }
-
+        
         public List<CardOnBoard> PreviuosChoices { get => m_PreviuosChoices; }
 
         public class CardOnBoard
@@ -44,38 +40,25 @@ namespace B20_Ex02_1
             m_PreviuosChoices = new List<CardOnBoard>(m_PreviousChoicesListDepth);
             m_Random = new Random();
             m_UseListProbality = i_UseListProbality;
-
         }
 
-        public int[] GetPick(int i_RowsLimit, int i_ColsLimit)
+        public int[] GetPick(int i_RowsLimit, int i_ColsLimit, CardOnBoard i_FirstPick = null)
         {
             int[] pickIndexes = new int[2];
             pickIndexes[0] = m_Random.Next(i_RowsLimit);
             pickIndexes[1] = m_Random.Next(i_ColsLimit);
             if (m_Random.NextDouble() > m_UseListProbality && m_PreviuosChoices.Any())
             {
-                m_PreviuosChoices.ForEach(prevChoice =>
+                CardOnBoard matchingCard = null;
+                if (i_FirstPick != null) 
+                { 
+                    matchingCard = tryFindPair(i_FirstPick);
+                }
+                else
                 {
-                    var matchingCard = tryFindPair(prevChoice);
-                    if (matchingCard != null)
-                    {
-                        pickIndexes[0] = prevChoice.Row;
-                        pickIndexes[1] = prevChoice.Col;
-                    }
-                });
-            }
+                    m_PreviuosChoices.ForEach(prevChoice => matchingCard = tryFindPair(prevChoice));
+                }
 
-            return pickIndexes;
-        }
-
-        public int[] GetPick(int i_RowsLimit, int i_ColsLimit, CardOnBoard i_FirstPick)
-        {
-            int[] pickIndexes = new int[2];
-            pickIndexes[0] = m_Random.Next(i_RowsLimit);
-            pickIndexes[1] = m_Random.Next(i_ColsLimit);
-            if (m_Random.NextDouble() > m_UseListProbality && m_PreviuosChoices.Any())
-            {
-                var matchingCard = tryFindPair(i_FirstPick);
                 if (matchingCard != null)
                 {
                     pickIndexes[0] = matchingCard.Row;
@@ -96,8 +79,8 @@ namespace B20_Ex02_1
             {
                 m_PreviuosChoices.Add(new CardOnBoard(i_Row, i_Col, i_Cell));
             }
+
             m_ListUpdateIndex++;
-            
         }
 
         public void RemoveFromPrevChoices(Cell i_Cell)
@@ -120,29 +103,6 @@ namespace B20_Ex02_1
         private CardOnBoard tryFindPair(CardOnBoard prevChoice)
         {
             return m_PreviuosChoices.FirstOrDefault(ch => ch.Cell.Letter == prevChoice.Cell.Letter && ch.Col != prevChoice.Col && ch.Row != prevChoice.Row);
-            
         }
-
-        //public AiEngine()
-        //{
-        //    // do equlide distance between two most farest cells ->  sqrt((x2-x1)^2 + (y2-y1)^2)
-        //    m_size = (int)Math.Sqrt(Math.Pow(5, 2) + Math.Pow(5, 2)) + 1;
-        //    m_Distances = new int[m_size];
-        //}
-
-
-        public void UpdateDistance(int i_Distance)
-        {
-            if ((i_Distance > 0) && (i_Distance < m_size))
-            {
-                Distances[i_Distance]++;
-            }
-        }
-
-        public int CalculteDistanceForTwoCells(int i_RowFirstCell, int i_ColFirstCell, int i_RowSecondCell, int i_ColSecondCell)
-        {
-            return (int)Math.Sqrt(Math.Pow(i_RowFirstCell - i_RowSecondCell, 2) + Math.Pow(i_ColFirstCell - i_ColSecondCell, 2));
-        }
-
     }
 }
