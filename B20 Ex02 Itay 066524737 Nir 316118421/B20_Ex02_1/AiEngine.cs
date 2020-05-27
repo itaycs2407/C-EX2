@@ -47,7 +47,7 @@ namespace B20_Ex02_1
 
         }
 
-        public int[] GetFirstPick(int i_RowsLimit, int i_ColsLimit)
+        public int[] GetPick(int i_RowsLimit, int i_ColsLimit)
         {
             int[] pickIndexes = new int[2];
             pickIndexes[0] = m_Random.Next(i_RowsLimit);
@@ -68,7 +68,7 @@ namespace B20_Ex02_1
             return pickIndexes;
         }
 
-        public int[] GetSecondPick(int i_RowsLimit, int i_ColsLimit, CardOnBoard i_FirstPick)
+        public int[] GetPick(int i_RowsLimit, int i_ColsLimit, CardOnBoard i_FirstPick)
         {
             int[] pickIndexes = new int[2];
             pickIndexes[0] = m_Random.Next(i_RowsLimit);
@@ -100,15 +100,6 @@ namespace B20_Ex02_1
             
         }
 
-        public void RemoveFromPrevChoices(int i_Row, int i_Col, Cell i_Cell)
-        {
-            m_PreviuosChoices.RemoveAll(card => card.Col == i_Row && card.Col == i_Col && card.Cell.Letter == i_Cell.Letter);
-        }
-
-        public void RemoveFromPrevChoices(int i_Index)
-        {
-            m_PreviuosChoices.RemoveAt(i_Index);
-        }
         public void RemoveFromPrevChoices(Cell i_Cell)
         {
             m_PreviuosChoices.RemoveAll(card => card.Cell.Letter == i_Cell.Letter);
@@ -138,6 +129,7 @@ namespace B20_Ex02_1
         //    m_size = (int)Math.Sqrt(Math.Pow(5, 2) + Math.Pow(5, 2)) + 1;
         //    m_Distances = new int[m_size];
         //}
+
 
         public void UpdateDistance(int i_Distance)
         {

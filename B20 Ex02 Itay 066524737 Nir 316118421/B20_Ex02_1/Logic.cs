@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.PerformanceData;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Threading;
 
 namespace B20_Ex02_1
 {
@@ -178,8 +174,8 @@ namespace B20_Ex02_1
 
             do
             {
-                firstPick = m_AiEngine.GetFirstPick(GetGridRows(), GetGridCols());
-                secondPick = m_AiEngine.GetSecondPick(GetGridRows(), GetGridCols(), new AiEngine.CardOnBoard(firstPick[0], firstPick[1], m_GameGrid[firstPick[0], firstPick[1]]));
+                firstPick = m_AiEngine.GetPick(GetGridRows(), GetGridCols());
+                secondPick = m_AiEngine.GetPick(GetGridRows(), GetGridCols(), new AiEngine.CardOnBoard(firstPick[0], firstPick[1], m_GameGrid[firstPick[0], firstPick[1]]));
             } while (!TryFlipCard(firstPick[0], firstPick[1]) || !TryFlipCard(secondPick[0], secondPick[1]));
 
             bool isHit = TryUpdateForEquality(firstPick[0], firstPick[1], secondPick[0], secondPick[1]);
