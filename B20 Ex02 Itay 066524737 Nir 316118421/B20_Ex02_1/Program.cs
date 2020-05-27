@@ -10,6 +10,7 @@ namespace B20_Ex02_1
             m_MemoryGame.InitializeGame();
             m_MemoryGame.Start();
             Console.WriteLine("Thank you for playing !");
+            Console.WriteLine("Press any key to exit .. ");
             Console.ReadKey();
         }
     }
