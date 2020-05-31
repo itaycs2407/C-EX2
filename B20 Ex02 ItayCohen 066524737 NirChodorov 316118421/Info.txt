@@ -1,0 +1,10 @@
+==========================Exercise Checking Report========================== 
+Exercise No.........................: 2 
+First Student Details.........: 066524737  - Itay Cohen 
+Second Student Details...: 316118421  - Nir Chodorov 
+Delivery Date......................: 27 - May - 2019  
+Delivered In Delay.............: No Delay 
+Reason..................................: None 
+Visual Studio Version........: 2019  
+Comments............................: None
+None =======================End Exercise Checking Report=========================  

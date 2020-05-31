@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace B20_Ex02_1
 {
-    public partial class AiEngine
+    public class AiEngine
     {
         private static int m_ListUpdateIndex = 0;
         private List<CardOnBoard> m_PreviuosChoices;

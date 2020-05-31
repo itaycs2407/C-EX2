@@ -29,9 +29,5 @@ namespace B20_Ex02_1
 
         public int Id { get => m_Id; }
 
-        public void MakeMove()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
